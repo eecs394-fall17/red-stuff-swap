@@ -1,5 +1,5 @@
-import { Component, Input, Output } from '@angular/core';
-import { ModalController, IonicPage, NavController, NavParams } from 'ionic-angular';
+import { Component, Input } from '@angular/core';
+import { NavController, NavParams } from 'ionic-angular';
 
 import { ItemDetailPage } from '../../pages/item-detail/item-detail';
 
@@ -17,14 +17,13 @@ export class ItemListingComponent {
 
   @Input('data') data: any;
   constructor(
-    public modalController: ModalController,
     public navCtrl: NavController,
     public navParams: NavParams,
     ) {}
 
   showItemDetails() {
-    this.navCtrl.push(ItemDetailPage, {
-      itemName: this.name,
+    this.navCtrl.push("ItemDetailPage", {
+      itemName: this.data.name,
     });
   }
 }

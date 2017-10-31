@@ -5,7 +5,7 @@
 </ion-header>
 
 <ion-content padding>
-  <ion-list *ngFor="let item of _items | async">
-    <item-listing [data]=item></item-listing>
+  <ion-list>
+    <item-listing *ngFor="let item of _items | async" [data]=item></item-listing>
   </ion-list>
 </ion-content>
