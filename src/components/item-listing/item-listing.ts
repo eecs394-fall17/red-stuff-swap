@@ -1,4 +1,8 @@
 import { Component, Input, Output } from '@angular/core';
+import { ModalController, IonicPage, NavController, NavParams } from 'ionic-angular';
+
+import { ItemDetailPage } from '../../pages/item-detail/item-detail';
+
 
 /**
  * Generated class for the ItemListingComponent component.
@@ -23,8 +27,18 @@ export class ItemListingComponent {
   @Input('time_range') time_range: number;
   @Input('status') status: any;
 
-  constructor() {
+  constructor(
+    public modalController: ModalController,
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    ) {
     
+  }
+
+  showItemDetails() {
+    this.navCtrl.push(ItemDetailPage, {
+      itemName: this.name,
+    });
   }
 
 }
