@@ -2,13 +2,13 @@
 <ion-item-sliding (click)="showItemDetails()">
   <ion-item>
     <ion-avatar item-start>
-      <img [src]="image_url">
+      <img [src]="data.image_url">
     </ion-avatar>
-    <h2>{{name}} ({{rating}})</h2>
-    <p>{{person_name}} / {{radius}} mi</p>
-    <button ion-button round item-end>
-      {{credit}} Credits
-    </button>
+    <h2>{{data.name}} ({{data.rating}})</h2>
+    <p>{{data.person_name}} / {{data.radius}} mi</p>
+    <ion-note item-end>
+      {{data.credit}} Credits
+    </ion-note>
   </ion-item>
 
   <ion-item-options>
