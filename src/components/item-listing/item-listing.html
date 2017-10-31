@@ -1,4 +1,20 @@
 <!-- Generated template for the ItemListingComponent component -->
+<ion-item-sliding>
 <ion-item>
-	{{name}}
-</ion-item>
+        <ion-avatar item-start>
+          <img [src]="image_url">
+        </ion-avatar>
+        <h2>{{name}}</h2>
+        <p>{{person_name}}</p>
+        <ion-note item-end>
+          {{rating}}
+        </ion-note>
+      </ion-item>
+
+      <ion-item-options>
+        <button ion-button color="secondary"> <!-- (click)="more(item)"> -->
+          <ion-icon name="send"></ion-icon>
+          Contact
+        </button>
+      </ion-item-options>
+    </ion-item-sliding>
