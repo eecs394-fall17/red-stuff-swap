@@ -4,15 +4,15 @@
         <ion-avatar item-start>
           <img [src]="image_url">
         </ion-avatar>
-        <h2>{{name}}</h2>
-        <p>{{person_name}}</p>
+        <h2>{{name}} ({{rating}})</h2>
+        <p>{{person_name}} / {{radius}} mi</p>
         <ion-note item-end>
-          {{rating}}
+          {{credit}} Credits
         </ion-note>
       </ion-item>
 
       <ion-item-options>
-        <button ion-button color="secondary"> <!-- (click)="more(item)"> -->
+        <button ion-button color="secondary">
           <ion-icon name="send"></ion-icon>
           Contact
         </button>
