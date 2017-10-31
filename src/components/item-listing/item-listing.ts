@@ -18,7 +18,7 @@ export class ItemListingComponent {
   @Input('person_name') person_name: string;
   @Input('credit') credit: number;
   @Input('radius') radius: number;
-  @Input('image_url') image_url: number;
+  @Input('image_url') image_url: string;
   @Input('time_created') time_created: Date;
   @Input('time_range') time_range: number;
   @Input('status') status: any;
