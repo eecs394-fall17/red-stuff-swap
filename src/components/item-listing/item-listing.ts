@@ -1,4 +1,4 @@
-import { Component, Input, Output } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 /**
  * Generated class for the ItemListingComponent component.
@@ -12,19 +12,10 @@ import { Component, Input, Output } from '@angular/core';
 })
 export class ItemListingComponent {
 
-  @Input('id') id: number;
-  @Input('name') name: string;
-  @Input('rating') rating: number;
-  @Input('person_name') person_name: string;
-  @Input('credit') credit: number;
-  @Input('radius') radius: number;
-  @Input('image_url') image_url: string;
-  @Input('time_created') time_created: Date;
-  @Input('time_range') time_range: number;
-  @Input('status') status: any;
+  @Input('data') data: any;
 
   constructor() {
-    
+
   }
 
 }
