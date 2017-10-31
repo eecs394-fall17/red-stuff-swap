@@ -8,6 +8,7 @@ import {AngularFireDatabaseModule, AngularFireDatabase} from "angularfire2/datab
 import { AngularFireAuthModule } from 'angularfire2/auth';
 
 import { HomePage } from '../pages/home/home';
+import { ItemDetailPage } from '../pages/item-detail/item-detail';
 import { ProfilePage } from '../pages/profile/profile';
 import { TabsPage } from '../pages/tabs/tabs';
 
@@ -20,6 +21,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
   declarations: [
     MyApp,
     HomePage,
+    ItemDetailPage,
     ProfilePage,
     TabsPage,
     ItemListingComponent
@@ -35,6 +37,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
   entryComponents: [
     MyApp,
     HomePage,
+    ItemDetailPage,
     ProfilePage,
     TabsPage,
     ItemListingComponent
