@@ -1,20 +1,20 @@
 <!-- Generated template for the ItemListingComponent component -->
-<ion-item-sliding>
-<ion-item>
-        <ion-avatar item-start>
-          <img [src]="image_url">
-        </ion-avatar>
-        <h2>{{name}} ({{rating}})</h2>
-        <p>{{person_name}} / {{radius}} mi</p>
-        <ion-note item-end>
-          {{credit}} Credits
-        </ion-note>
-      </ion-item>
+<ion-item-sliding (click)="showItemDetails()">
+  <ion-item>
+    <ion-avatar item-start>
+      <img [src]="image_url">
+    </ion-avatar>
+    <h2>{{name}} ({{rating}})</h2>
+    <p>{{person_name}} / {{radius}} mi</p>
+    <button ion-button round item-end>
+      {{credit}} Credits
+    </button>
+  </ion-item>
 
-      <ion-item-options>
-        <button ion-button color="secondary">
-          <ion-icon name="send"></ion-icon>
-          Contact
-        </button>
-      </ion-item-options>
-    </ion-item-sliding>
+  <ion-item-options>
+    <button ion-button color="secondary">
+      <ion-icon name="send"></ion-icon>
+      Contact
+    </button>
+  </ion-item-options>
+</ion-item-sliding>
