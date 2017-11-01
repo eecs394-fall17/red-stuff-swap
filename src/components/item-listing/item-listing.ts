@@ -1,7 +1,8 @@
-import { Component, Input, Output } from '@angular/core';
-import { ModalController, IonicPage, NavController, NavParams } from 'ionic-angular';
+import { Component, Input } from '@angular/core';
+import {Modal, ModalController, NavController, NavParams} from 'ionic-angular';
 
 import { ItemDetailPage } from '../../pages/item-detail/item-detail';
+import {EmailComposer} from "@ionic-native/email-composer";
 
 /**
  * Generated class for the ItemListingComponent component.
@@ -16,15 +17,22 @@ import { ItemDetailPage } from '../../pages/item-detail/item-detail';
 export class ItemListingComponent {
 
   @Input('data') data: any;
-  constructor(
-    public modalController: ModalController,
-    public navCtrl: NavController,
-    public navParams: NavParams,
-    ) {}
+  constructor(public navCtrl: NavController, public navParams: NavParams, private modalCtrl: ModalController,
+              private emailComposer: EmailComposer) {}
 
   showItemDetails() {
-    this.navCtrl.push(ItemDetailPage, {
-      itemName: this.name,
+    this.navCtrl.push("ItemDetailPage", {
+      itemName: this.data.name,
     });
+  }
+
+  openEmailDialog() {
+    // const newEmailModal:Modal = this.modalCtrl.create('EmailPage', {email: this.data.email, name: this.data.person_name});
+    // newEmailModal.present();
+    this.emailComposer.open({to: this.data.email, isHtml: true});
+  }
+
+  reserve(event){
+    event.stopPropagation();
   }
 }

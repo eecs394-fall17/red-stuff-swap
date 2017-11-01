@@ -2,8 +2,9 @@ import { Component } from '@angular/core';
 
 import {Observable} from "rxjs/Observable";
 import { AngularFireDatabase } from 'angularfire2/database';
+import {IonicPage} from "ionic-angular";
 
-
+@IonicPage()
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'

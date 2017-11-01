@@ -1,18 +1,18 @@
 <!-- Generated template for the ItemListingComponent component -->
-<ion-item-sliding (click)="showItemDetails()">
-  <ion-item>
+<ion-item-sliding>
+  <button ion-item detail-none no-lines (click)="showItemDetails()">
     <ion-avatar item-start>
       <img [src]="data.image_url">
     </ion-avatar>
-    <h2>{{data.name}} ({{data.rating}})</h2>
+    <h2>{{data.name}}  ★{{data.rating}}</h2>
     <p>{{data.person_name}} / {{data.radius}} mi</p>
-    <ion-note item-end>
+    <button ion-button small item-end (click)="reserve($event)">
       {{data.credit}} Credits
-    </ion-note>
-  </ion-item>
+    </button>
+  </button>
 
   <ion-item-options>
-    <button ion-button color="secondary">
+    <button ion-button color="secondary" (click)="openEmailDialog()">
       <ion-icon name="send"></ion-icon>
       Contact
     </button>
