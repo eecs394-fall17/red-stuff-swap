@@ -9,6 +9,7 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import {EmailComposer} from "@ionic-native/email-composer";
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     StatusBar,
     SplashScreen,
     AngularFireDatabase,
+    EmailComposer,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
