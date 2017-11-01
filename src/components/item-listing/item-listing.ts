@@ -17,8 +17,28 @@ import {EmailComposer} from "@ionic-native/email-composer";
 export class ItemListingComponent {
 
   @Input('data') data: any;
+  stars = ["star", "star", "star", "star", "star"];
+
   constructor(public navCtrl: NavController, public navParams: NavParams, private modalCtrl: ModalController,
               private emailComposer: EmailComposer) {}
+
+  ngOnInit(){
+    let counter = 0;
+    for(let i = 0; i < Math.floor(this.data.rating); i++){
+      this.stars[counter] = "star";
+      counter++;
+    }
+    if(this.data.rating - counter >= 0.5){
+      this.stars[counter] = "star-half";
+    }else{
+      this.stars[counter] = "star-outline";
+    }
+    counter++;
+    for(let i = 0; i < 4 - Math.floor(this.data.rating); i++){
+      this.stars[counter] = "star-outline";
+      counter++;
+    }
+  }
 
   showItemDetails() {
     this.navCtrl.push("ItemDetailPage", {

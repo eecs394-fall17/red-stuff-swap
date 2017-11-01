@@ -1,18 +1,25 @@
 <!-- Generated template for the ItemListingComponent component -->
 <ion-item-sliding>
   <button ion-item detail-none no-lines (click)="showItemDetails()">
-    <ion-avatar item-start>
+    <ion-thumbnail item-start>
       <img [src]="data.image_url">
-    </ion-avatar>
-    <h2>{{data.name}}  ★{{data.rating}}</h2>
-    <p>{{data.person_name}} / {{data.radius}} mi</p>
-    <button ion-button small item-end (click)="reserve($event)">
+    </ion-thumbnail>
+    <h2>{{data.name}}</h2>
+    <p>{{data.person_name}} | {{data.radius}} mi</p>
+    <h4>
+      <span>
+        <ion-icon *ngFor="let n of stars" [name]="n"></ion-icon>
+        <span>{{data.rating}}</span>
+      </span>
+      ({{data.reviews_num}})
+    </h4>
+    <button ion-button small round item-end (click)="reserve($event)">
       {{data.credit}} Credits
     </button>
   </button>
 
   <ion-item-options>
-    <button ion-button color="secondary" (click)="openEmailDialog()">
+    <button ion-button color="light-green" (click)="openEmailDialog()">
       <ion-icon name="send"></ion-icon>
       Contact
     </button>
