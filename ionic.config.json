@@ -1,6 +1,8 @@
 {
   "name": "red-stuff-swap/",
-  "app_id": "d6a5b544",
+  "app_id": "1a1e0d53",
   "type": "ionic-angular",
-  "integrations": {}
+  "integrations": {
+    "cordova": {}
+  }
 }

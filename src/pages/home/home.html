@@ -4,14 +4,8 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-  <ion-list *ngFor="let item of items">
-    <item-listing [name]=item.name
-    [rating]=item.rating
-    [person_name]=item.person_name
-    [credit]=item.credit
-    [image_url]=item.image_url
-    [radius]=item.radius
-    ></item-listing>
+<ion-content>
+  <ion-list>
+    <item-listing *ngFor="let item of _items | async" [data]=item></item-listing>
   </ion-list>
 </ion-content>
