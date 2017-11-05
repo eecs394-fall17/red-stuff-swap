@@ -5,6 +5,10 @@
 </ion-header>
 
 <ion-content>
+  <button ion-button full class="add-item-btn" (click)="addNewItem()">
+    <ion-icon name="add"></ion-icon>
+    <span>Add an item</span>
+  </button>
   <ion-list>
     <item-listing *ngFor="let item of _items | async" [data]=item></item-listing>
   </ion-list>

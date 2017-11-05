@@ -1,3 +1,10 @@
 page-home {
-
+  ion-content{
+    .add-item-btn{
+      span{
+        margin-left: 6px;
+        font-weight: 600;
+      }
+    }
+  }
 }
