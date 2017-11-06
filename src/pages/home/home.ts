@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 
 import {Observable} from "rxjs/Observable";
 import { AngularFireDatabase } from 'angularfire2/database';
-import {IonicPage} from "ionic-angular";
+import {IonicPage, NavController} from "ionic-angular";
 
 @IonicPage()
 @Component({
@@ -13,7 +13,11 @@ export class HomePage {
 
 	_items: Observable<any[]>;
 
-  constructor(private db:AngularFireDatabase) {
-    this._items = db.list('/item').valueChanges();
+  constructor(private db:AngularFireDatabase, private navCtrl: NavController) {
+    this._items = this.db.list('/item').valueChanges();
+  }
+
+  addNewItem(){
+    this.navCtrl.push("NewItemPage");
   }
 }
