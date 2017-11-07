@@ -1,6 +1,8 @@
 import { Component, Input } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 
+import { ItemDetailPage } from '../../pages/item-detail/item-detail';
+import { EditItemPage } from '../../pages/edit-item/edit-item';
 import {EmailComposer} from "@ionic-native/email-composer";
 
 /**
@@ -48,6 +50,12 @@ export class ItemListingComponent {
     // const newEmailModal:Modal = this.modalCtrl.create('EmailPage', {email: this.data.email, name: this.data.person_name});
     // newEmailModal.present();
     this.emailComposer.open({to: this.data.email, isHtml: true});
+  }
+
+  openEditDialog(){
+    this.navCtrl.push("EditItemPage", {
+      data: this.data,
+    });
   }
 
   reserve(event){
