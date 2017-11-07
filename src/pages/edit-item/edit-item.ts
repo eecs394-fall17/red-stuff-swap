@@ -32,11 +32,11 @@ export class EditItemPage {
   }
 
   uploadImage(){
-    if(this.itemImgUrl != ""){
-      this.itemImgUrl = "";
-    }else{
-      this.itemImgUrl = "https://firebasestorage.googleapis.com/v0/b/red-stuff-swap.appspot.com/o/31j86wY4VwL._SL500_AC_SS350_.jpg?alt=media&token=a8e609a0-5bc2-43b3-b30e-e13dda997311";
-    }
+    // if(this.itemImgUrl != ""){
+    //   this.itemImgUrl = "";
+    // }else{
+    //   this.itemImgUrl = "https://firebasestorage.googleapis.com/v0/b/red-stuff-swap.appspot.com/o/31j86wY4VwL._SL500_AC_SS350_.jpg?alt=media&token=a8e609a0-5bc2-43b3-b30e-e13dda997311";
+    // }
   }
 
 }
