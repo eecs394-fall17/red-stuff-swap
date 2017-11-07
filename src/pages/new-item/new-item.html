@@ -26,9 +26,9 @@
     <ion-label stacked>Image</ion-label>
   </ion-item>
   <ion-item no-lines class="non-title-item">
-    <div class="image-placeholder" (click)="uploadImage()" >
+    <div class="image-placeholder" (click)="pickImage()" >
       <ion-icon name="add" *ngIf="itemImgUrl == ''"></ion-icon>
-      <img *ngIf="itemImgUrl != ''" [src]="itemImgUrl">
+      <div class="image" *ngIf="itemImgUrl != ''" [ngStyle]="{'background-image':'url('+itemImgUrl+')'}"></div>
     </div>
   </ion-item>
   <ion-item no-lines>

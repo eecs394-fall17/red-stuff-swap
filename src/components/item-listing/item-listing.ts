@@ -1,7 +1,6 @@
 import { Component, Input } from '@angular/core';
-import {Modal, ModalController, NavController, NavParams} from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 
-import { ItemDetailPage } from '../../pages/item-detail/item-detail';
 import {EmailComposer} from "@ionic-native/email-composer";
 
 /**
@@ -19,8 +18,7 @@ export class ItemListingComponent {
   @Input('data') data: any;
   stars = ["star", "star", "star", "star", "star"];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private modalCtrl: ModalController,
-              private emailComposer: EmailComposer) {}
+  constructor(public navCtrl: NavController, public navParams: NavParams, private emailComposer: EmailComposer) {}
 
   ngOnInit(){
     let counter = 0;
