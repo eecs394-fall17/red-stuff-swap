@@ -26,10 +26,7 @@ import {environment} from "../../environments/environment";
 export class NewItemPage {
 
   private _itemRef: AngularFireList<any>;
-  private _lastImage: string = null;
-  private _storageBasePath:string = '/uploads';
-  private _uploadTask: firebase.storage.UploadTask;
-  private _selectedPhoto: any;
+  private _loader: any;
 
   private itemName: string = "";
   private itemDescription: string = "";
@@ -66,26 +63,23 @@ export class NewItemPage {
     this.navCtrl.pop();
   }
 
-  private uploadImage(){
+  private uploadImage(imageData){
+    // todo should add user directory
+    const pictures = firebase.storage().ref(`images/${NewItemPage.createFileName()}`);
+    try{
+      pictures.putString(imageData, 'base64', {contentType: 'image/jpeg'})
+        .then(snapshot=>{
+          this.itemImgUrl = snapshot.downloadURL;
+          this._loader.dismiss();
+        }).catch(error=>{
+        this.presentToast(`error: ${error}`);
+      });
+    }catch(err){
+      this.itemDescription=`some error occured, error message: ${err.message}`;
+    }
   }
 
-  private dataURItoBlob(dataURI) {
-    // code adapted from: http://stackoverflow.com/questions/33486352/cant-upload-image-to-aws-s3-from-ionic-camera
-    let binary = atob(dataURI.split(',')[1]);
-    let array = [];
-    for (let i = 0; i < binary.length; i++) {
-      array.push(binary.charCodeAt(i));
-    }
-    return new Blob([new Uint8Array(array)], {type: 'image/jpeg'});
-  };
-
   pickImage() {
-    // if(this.itemImgUrl != ""){
-    //   this.itemImgUrl = "";
-    // }else{
-    //   this.itemImgUrl = "https://firebasestorage.googleapis.com/v0/b/red-stuff-swap.appspot.com/o/Mattel-Games-Pictionary-For-Kids2.jpg?alt=media&token=ee38ea11-ee6d-483b-84a2-93c256dc8a38";
-    // }
-
     let actionSheet = this.actionSheetCtrl.create({
       title: 'Select Image Source',
       buttons: [
@@ -116,59 +110,20 @@ export class NewItemPage {
       quality: 100,
       sourceType: sourceType,
       saveToPhotoAlbum: false,
-      correctOrientation: true
+      correctOrientation: true,
+      destinationType: this.camera.DestinationType.DATA_URL,
+      encodingType: this.camera.EncodingType.JPEG,
+      mediaType: this.camera.MediaType.PICTURE
     };
-    let self = this;
 
-    // todo this works!
     // Get the data of an image
-    this.camera.getPicture(options).then((imagePath) => {
-      // Special handling for Android library
-      let correctPath, currentName;
-      if (this.platform.is('android') && sourceType === this.camera.PictureSourceType.PHOTOLIBRARY) {
-        // android
-        // this.filePath.resolveNativePath(imagePath)
-        //   .then(filePath => {
-        correctPath = imagePath.substr(0, imagePath.lastIndexOf('/') + 1);
-        currentName = imagePath.substring(imagePath.lastIndexOf('/') + 1, imagePath.lastIndexOf('?'));
-        // this.itemDescription = `currentName: ${currentName}\ncorrectPath: ${correctPath}`;
-        self.copyFileToLocalDir(correctPath, currentName, NewItemPage.createFileName());
-          // }).catch(error => {
-          //   this.presentToast('Failed to resolve path');
-        // });
-      } else {
-        // ios
-        currentName = imagePath.substr(imagePath.lastIndexOf('/') + 1);
-        correctPath = imagePath.substr(0, imagePath.lastIndexOf('/') + 1);
-        // this.itemDescription = `currentName: ${currentName}\ncorrectPath: ${correctPath}`;
-        self.copyFileToLocalDir(correctPath, currentName, NewItemPage.createFileName());
-      }
-
-      // this._lastImage = currentName;
-      // this.itemImgUrl = `${correctPath}${currentName}`;
-      // this.itemDescription = `itemImgUrl: ${this.itemImgUrl}`;
+    this.camera.getPicture(options).then((imageData) => {
+      this._loader = this.loadingCtrl.create({content: `Please wait...`});
+      this._loader.present();
+      this.uploadImage(imageData);
     }, (err) => {
       this.presentToast('Error while selecting image.');
     });
-
-    // todo here's what do not work
-    // this.camera.getPicture(options).then(imagePath=>{
-    //   // const currentName = imagePath.substr(imagePath.lastIndexOf('/') + 1);
-    //   // const correctPath = imagePath.substr(0, imagePath.lastIndexOf('/') + 1);
-    //   // this.copyFileToLocalDir(correctPath, currentName, NewItemPage.createFileName());
-    //   this.itemDescription = `${imagePath}`;
-    //   const image  = `data:image/jpeg;base64,${imagePath}`;
-    //   this.presentToast(`get image`);
-    //   const pictures = storage().ref('pictures');
-    //   this.presentToast(`get pictures ref`);
-    //   pictures.putString(image, `data_url`).then(success=>{
-    //     this.itemDescription=`succeed?`;
-    //   }, error=>{
-    //     this.itemDescription = `failed?`;
-    //   }).catch(error=>{
-    //     this.itemDescription = `failed!`;
-    //   });
-    // });
   }
 
   // Create a new name for the image
@@ -176,24 +131,6 @@ export class NewItemPage {
     let d = new Date(),
       n = d.getTime();
     return n + ".jpg";
-  }
-
-  // Copy the image to a local folder
-  private copyFileToLocalDir(namePath, currentName, newFileName) {
-    this.platform.ready().then(()=>{
-      // this.presentToast(`Copy File, dataDirectory: ${this.file.dataDirectory}`);
-      // this.itemDescription = `currentName: ${currentName}\nnamePath: ${namePath}\nnewFileName: ${newFileName}\ndataDirectory: ${this.file.dataDirectory}`;
-      // this.presentToast('Info Displayed');
-      this.file.copyFile(namePath, currentName, this.file.dataDirectory, newFileName).then(success => {
-        // this.itemDescription = `copy file succeed`;
-        // this.presentToast('copy file succeed');
-        this._lastImage = newFileName;
-        this.itemImgUrl = this.pathForImage(newFileName);
-      }, error => {
-        // this.itemDescription = `copy file failed`;
-        this.presentToast('Error while storing file.');
-      });
-    });
   }
 
   private presentToast(text) {
