@@ -21,11 +21,13 @@ page-new-item {
         border-radius: 6px;
         padding: 8px;
         text-align: center;
-        img{
-          min-height: calc(100% - 20px) !important;
-          width: auto !important;
+        .image{
           border-radius: 4px;
-          display:block;
+          height: 100%;
+          background-position: center;
+          background-repeat: no-repeat;
+          background-size: contain;
+          width:100%;
         }
         ion-icon{
           color: rgba(0, 0, 0, 0.4);
