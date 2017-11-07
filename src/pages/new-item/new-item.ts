@@ -5,8 +5,6 @@ import {
 } from 'ionic-angular';
 import {AngularFireDatabase, AngularFireList} from "angularfire2/database";
 import {Camera} from "@ionic-native/camera";
-import {Transfer} from "@ionic-native/transfer";
-import {FilePath} from "@ionic-native/file-path";
 import {File} from "@ionic-native/file";
 import * as firebase from "firebase";
 import {environment} from "../../environments/environment";
@@ -35,9 +33,8 @@ export class NewItemPage {
   private credit: number = 10;
 
   constructor(private db: AngularFireDatabase, private navCtrl: NavController, private camera: Camera,
-              private transfer: Transfer, private file: File, private filePath: FilePath,
               private actionSheetCtrl: ActionSheetController, private toastCtrl: ToastController,
-              private platform: Platform, private loadingCtrl: LoadingController) {
+              private loadingCtrl: LoadingController) {
     this._itemRef = this.db.list('/item');
     firebase.initializeApp(environment.firebase);
   }
@@ -65,18 +62,14 @@ export class NewItemPage {
 
   private uploadImage(imageData){
     // todo should add user directory
-    const pictures = firebase.storage().ref(`images/${NewItemPage.createFileName()}`);
-    try{
-      pictures.putString(imageData, 'base64', {contentType: 'image/jpeg'})
-        .then(snapshot=>{
-          this.itemImgUrl = snapshot.downloadURL;
-          this._loader.dismiss();
-        }).catch(error=>{
-        this.presentToast(`error: ${error}`);
-      });
-    }catch(err){
-      this.itemDescription=`some error occured, error message: ${err.message}`;
-    }
+    const images = firebase.storage().ref(`images/${NewItemPage.createFileName()}`);
+    images.putString(imageData, 'base64', {contentType: 'image/jpeg'})
+      .then(snapshot=>{
+        this.itemImgUrl = snapshot.downloadURL;
+        this._loader.dismiss();
+      }).catch(error=>{
+      this.presentToast(`error: ${error}`);
+    });
   }
 
   pickImage() {
@@ -140,14 +133,5 @@ export class NewItemPage {
       position: 'top'
     });
     toast.present();
-  }
-
-  // Always get the accurate path to your apps folder
-  private pathForImage(img) {
-    if (img === null) {
-      return '';
-    } else {
-      return this.file.dataDirectory + img;
-    }
   }
 }

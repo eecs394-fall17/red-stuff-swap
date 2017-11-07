@@ -1,8 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 
-import { ItemDetailPage } from '../../pages/item-detail/item-detail';
-import { EditItemPage } from '../../pages/edit-item/edit-item';
 import {EmailComposer} from "@ionic-native/email-composer";
 
 /**
