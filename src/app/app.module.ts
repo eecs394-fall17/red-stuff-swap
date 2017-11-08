@@ -10,6 +10,10 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import {EmailComposer} from "@ionic-native/email-composer";
+import {File} from "@ionic-native/file";
+import {Transfer} from "@ionic-native/transfer";
+import {FilePath} from "@ionic-native/file-path";
+import {Camera} from "@ionic-native/camera";
 
 @NgModule({
   declarations: [
@@ -31,6 +35,10 @@ import {EmailComposer} from "@ionic-native/email-composer";
     SplashScreen,
     AngularFireDatabase,
     EmailComposer,
+    File,
+    Transfer,
+    FilePath,
+    Camera,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
