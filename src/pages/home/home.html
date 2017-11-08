@@ -1,14 +1,24 @@
 <ion-header>
-  <ion-navbar>
-    <ion-title>Stuff Swap</ion-title>
+  <ion-navbar class="button-logo">
+    <ion-buttons large>
+      <button ion-button large>
+        <ion-icon name="person"></ion-icon>
+      </button>
+    </ion-buttons>
+    <img src="assets/imgs/Spare Logo.png">
+    <ion-buttons end>
+      <button ion-button large>
+        <ion-icon name="add" (click)="addNewItem()"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
+
 <ion-content>
-  <button ion-button full class="add-item-btn" (click)="addNewItem()">
-    <ion-icon name="add"></ion-icon>
-    <span>Add an item</span>
-  </button>
+  <ion-item-divider text-center>
+    Items Available for Borrow
+  </ion-item-divider>
   <ion-list>
     <item-listing *ngFor="let item of _items | async" [data]=item></item-listing>
   </ion-list>
