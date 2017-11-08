@@ -1,10 +1,40 @@
 page-home {
-  ion-content{
-    .add-item-btn{
-      span{
-        margin-left: 6px;
-        font-weight: 600;
-      }
+  .toolbar-background-md {
+    background: white;
+  }
+
+  .button-logo {
+    height: 110px;
+
+    button {
+      width: 50px;
+      height: 50px;
+      background-color: white;
+      outline: none;
+      border: none;
+      color: black;
+      button-inner: 200 * 200;
     }
+
+    img {
+      position: absolute;
+      top: 0;
+      left: 40%;
+      padding: auto;
+      width: 108px;
+      height: 108px;
+    }
+  }
+
+  .button-left {
+    left: 0;
+  }
+
+  .button-right {
+    left: 80%;
+  }
+
+  .item-divider-md {
+    color: #fbad1b;
   }
 }

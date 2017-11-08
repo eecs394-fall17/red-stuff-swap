@@ -5,17 +5,9 @@
       <img [src]="data.image_url">
     </ion-thumbnail>
     <h2>{{data.name}}</h2>
+    <p>{{data.description}}</p>
+    <br/>
     <p>By {{data.person_name}} | {{data.radius}} mi</p>
-    <h4>
-      <span>
-        <ion-icon *ngFor="let n of stars" [name]="n"></ion-icon>
-        <span>{{data.rating}}</span>
-      </span>
-      ({{data.reviews_num}})
-    </h4>
-    <button ion-button small round item-end (click)="reserve($event)">
-      {{data.credit}} Credits
-    </button>
   </button>
 
   <ion-item-options>

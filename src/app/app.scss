@@ -14,3 +14,16 @@
 // To declare rules for a specific mode, create a child rule
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
+
+@font-face {
+  font-family: 'raleway';
+  font-weight: 300;
+  font-style: normal;
+  src: url('../assets/fonts/raleway-regular/raleway-regular.eot');
+  src: url('../assets/fonts/raleway-regular/raleway-regular.eot?#iefix') format('embedded-opentype'),
+  local('Lato Light'),
+  local('Lato-300'),
+  url('../assets/fonts/raleway-regular/raleway-regular.woff') format('woff'),
+  url('../assets/fonts/raleway-regular/raleway-regular.ttf') format('truetype'),
+  url('../assets/fonts/raleway-regular/raleway-regular.svg#Lato') format('svg');
+}
