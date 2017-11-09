@@ -22,7 +22,7 @@ import {Camera} from "@ionic-native/camera";
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
-    AngularFireModule.initializeApp(environment.firebase, 'stuff-swap'),
+    AngularFireModule.initializeApp(environment.firebase),
     AngularFireDatabaseModule,
     AngularFireAuthModule
   ],

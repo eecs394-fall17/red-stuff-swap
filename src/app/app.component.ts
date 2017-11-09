@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import {App, NavController, Platform} from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import {environment} from "../environments/environment";
+import * as firebase from "firebase";
 
 @Component({
   templateUrl: 'app.html'
