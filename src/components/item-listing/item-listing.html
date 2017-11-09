@@ -5,23 +5,21 @@
       <img [src]="data.image_url">
     </ion-thumbnail>
     <h2>{{data.name}}</h2>
+    <p>{{data.description}}</p>
+    <br/>
     <p>By {{data.person_name}} | {{data.radius}} mi</p>
-    <h4>
-      <span>
-        <ion-icon *ngFor="let n of stars" [name]="n"></ion-icon>
-        <span>{{data.rating}}</span>
-      </span>
-      ({{data.reviews_num}})
-    </h4>
-    <button ion-button small round item-end (click)="reserve($event)">
-      {{data.credit}} Credits
-    </button>
   </button>
 
   <ion-item-options>
     <button ion-button color="light-green" (click)="openEmailDialog()">
       <ion-icon name="send"></ion-icon>
       Contact
+    </button>
+  </ion-item-options>
+  <ion-item-options side="left">
+    <button ion-button color="orange" (click)="openEditDialog()">
+      <ion-icon name="hammer"></ion-icon>
+      Edit
     </button>
   </ion-item-options>
 </ion-item-sliding>

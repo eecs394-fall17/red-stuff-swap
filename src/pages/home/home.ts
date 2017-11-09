@@ -14,6 +14,6 @@ export class HomePage {
 	_items: Observable<any[]>;
 
   constructor(private db:AngularFireDatabase) {
-    this._items = db.list('/item').valueChanges();
+    this._items = this.db.list('/item').valueChanges();
   }
 }

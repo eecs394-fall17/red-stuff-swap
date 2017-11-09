@@ -1,0 +1,66 @@
+<!--
+  Generated template for the NewItemPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Add an Item</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+  <form [formGroup]="authForm" (ngSubmit)="addItem(authForm.value)">
+
+    <ion-item class="text-box" no-lines *ngIf="developerMode">
+      <ion-input type="text" placeholder="Lender Name" formControlName="personName"></ion-input>
+    </ion-item>
+    <ion-item class="text-box" no-lines *ngIf="developerMode">
+      <ion-input type="text" placeholder="Lender Email" formControlName="personEmail"></ion-input>
+    </ion-item>
+
+    <ion-item class="text-box" no-lines>
+      <ion-input type="text" placeholder="Item Name" formControlName="itemName"></ion-input>
+    </ion-item>
+    <ion-item class="hint-text" *ngIf="authForm.controls.itemName.hasError('maxlength') && authForm.controls.itemName.touched">
+      <p>Sorry, maximum item name length is 40!</p>
+    </ion-item>
+    <ion-item class="text-box" no-lines>
+      <ion-textarea placeholder="Item Description" formControlName="itemDescription"></ion-textarea>
+    </ion-item>
+    <ion-item class="hint-text" *ngIf="authForm.controls.itemDescription.hasError('maxlength') && authForm.controls.itemDescription.touched">
+      <p>Sorry, maximum description length is 200!</p>
+    </ion-item>
+    <ion-item no-lines>
+      <ion-label stacked>Image</ion-label>
+    </ion-item>
+    <ion-item no-lines class="non-title-item">
+      <div class="image-placeholder" (click)="pickImage()">
+        <ion-icon name="add" *ngIf="itemImgUrl == ''"></ion-icon>
+        <div class="image" *ngIf="itemImgUrl != ''" [ngStyle]="{'background-image':'url('+itemImgUrl+')'}"></div>
+      </div>
+    </ion-item>
+    <ion-item no-lines>
+      <ion-label>Max Lend Time</ion-label>
+      <ion-select formControlName="lendTime" interface="popover">
+        <ion-option value="1">1 day</ion-option>
+        <ion-option value="2">2 days</ion-option>
+        <ion-option value="3">3 days</ion-option>
+        <ion-option value="4">4 days</ion-option>
+        <ion-option value="5">5 days</ion-option>
+        <ion-option value="6">6 days</ion-option>
+        <ion-option value="7">7 days</ion-option>
+        <ion-option value="8">8 days</ion-option>
+        <ion-option value="9">9 days</ion-option>
+        <ion-option value="10">10 days</ion-option>
+      </ion-select>
+    </ion-item>
+    <button ion-button block [disabled]="!authForm.valid || itemImgUrl == ''" class="add-btn" type="submit">Add Item</button>
+  </form>
+  <p (click)="developerMode = !developerMode">Developer Mode</p>
+</ion-content>

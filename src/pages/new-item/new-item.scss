@@ -1,0 +1,70 @@
+page-new-item {
+  ion-content{
+    ion-item{
+      &.text-box{
+        .item-inner{
+          .input{
+            border: 1px solid rgba(0, 0, 0, 0.7);
+            .text-input{
+              margin: 11px 8px 11px 8px;
+            }
+          }
+        }
+        margin-bottom: 4px;
+      }
+      ion-textarea{
+        textarea{
+          min-height: 16rem;
+          height: 16rem;
+        }
+      }
+      .label-ios[stacked]{
+        font-size: 1.6rem;
+      }
+      &.hint-text{
+        min-height: 2rem;
+        ion-label{
+          margin: 5px 4px 5px 0;
+          p{
+            font-size: 1.3rem;
+            color: map-get($colors, danger);
+          }
+        }
+      }
+    }
+    .non-title-item{
+      ion-label{
+        margin-top: 0;
+      }
+      .image-placeholder{
+        min-height: 96px;
+        min-width: 96px;
+        height: 96px;
+        width: 96px;
+        border: dashed rgba(0, 0, 0, 0.4) 2px;
+        //border-radius: 6px;
+        padding: 4px;
+        text-align: center;
+        .image{
+          border-radius: 4px;
+          height: 100%;
+          background-position: center;
+          background-repeat: no-repeat;
+          background-size: contain;
+          width:100%;
+        }
+        ion-icon{
+          color: rgba(0, 0, 0, 0.4);
+          min-height: calc(100% - 12px) !important;
+          width: auto !important;
+          display:block;
+          line-height: 84px;
+          font-size: 2.5em;
+        }
+      }
+    }
+    .add-btn{
+      margin-top: 12px;
+    }
+  }
+}
