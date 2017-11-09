@@ -27,3 +27,79 @@
   url('../assets/fonts/raleway-regular/raleway-regular.ttf') format('truetype'),
   url('../assets/fonts/raleway-regular/raleway-regular.svg#Lato') format('svg');
 }
+
+
+
+.app-header {
+  ion-navbar{
+    height: 80px;
+
+    .toolbar-background{
+      background: #f8f8f8;
+      border-color: rgba(0, 0, 0, 0.3) !important;
+      border-width: 0 0 0.55px !important;
+      border-style: solid;
+    }
+
+    .toolbar-content{
+      text-align: center;
+      img {
+        position: absolute;
+        top: 0;
+        left: 40%;
+        padding: 8px;
+        width: 76px;
+        height: 76px;
+      }
+    }
+
+    button {
+      color: black;
+      font-size: 2rem;
+      margin: 0 10px !important;
+    }
+  }
+}
+
+.app-content{
+  top: 80px;
+  height: calc(100% - 80px);
+}
+
+ion-header{
+  &.header-md::after{
+    left: 0;
+    bottom: 0;
+    background: 0;
+    position: absolute;
+    width: 100%;
+    height: 0;
+    content: "";
+  }
+  ion-navbar{
+    .toolbar-background{
+      background: #ffffff;
+      border-color: rgba(0, 0, 0, 0.15) !important;
+      border-width: 0 0 0.55px !important;
+      border-style: solid;
+    }
+    &.toolbar-md{
+      min-height: 44px;
+    }
+    ion-title{
+      .toolbar-title{
+        color: map-get($colors, primary);
+        font-weight: 300;
+        font-size: 1.5rem;
+      }
+      &.centered-title{
+        .toolbar-title{
+          color: map-get($colors, primary);
+          font-weight: 300;
+          font-size: 1.5rem;
+          text-align: center;
+        }
+      }
+    }
+  }
+}

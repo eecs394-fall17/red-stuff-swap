@@ -1,1 +1,16 @@
-<ion-nav [root]="rootPage"></ion-nav>
+<ion-header class="app-header">
+  <ion-navbar>
+    <ion-buttons left>
+      <button ion-button icon-only>
+        <ion-icon name="ios-person-outline"></ion-icon>
+      </button>
+    </ion-buttons>
+    <img src="assets/imgs/Spare Logo.png">
+    <ion-buttons right>
+      <button ion-button icon-only (click)="addNewItem()">
+        <ion-icon name="ios-add-circle-outline"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+<ion-nav [root]="rootPage" class="app-content"></ion-nav>
