@@ -1,50 +1,5 @@
 page-home {
-
-  .toolbar-background-md {
-    background: white;
-  }
-
-  .button-logo {
-    height: 110px;
-
-    button {
-      width: 50px;
-      height: 50px;
-      background-color: white;
-      outline: none;
-      border: none;
-      color: black;
-      button-inner: 200 * 200;
-    }
-
-    img {
-      position: absolute;
-      top: 0;
-      left: 40%;
-      padding: auto;
-      width: 108px;
-      height: 108px;
-
-    }
-  }
-
-  .button-left {
-    left: 0;
-  }
-
-  .button-right {
-    left: 80%;
-  }
-
-  .item-divider-ios {
-    color: #fbad1b;
-    padding-left: 16px;
-    border-bottom: 1px solid #dedede;
-    font-size: 1.4rem;
-    background-color: #fff;
-  }
-
-  .item-divider-md {
+  .item-divider-md, .item-divider-ios {
     color: #fbad1b;
     padding-left: 16px;
     border-bottom: 1px solid #dedede;
