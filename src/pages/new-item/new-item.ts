@@ -5,9 +5,7 @@ import {
 } from 'ionic-angular';
 import {AngularFireDatabase, AngularFireList} from "angularfire2/database";
 import {Camera} from "@ionic-native/camera";
-import {File} from "@ionic-native/file";
-import * as firebase from "firebase";
-import {environment} from "../../environments/environment";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 
 /**
  * Generated class for the NewItemPage page.
@@ -26,6 +24,9 @@ export class NewItemPage {
   private _itemRef: AngularFireList<any>;
   private _loader: any;
 
+  developerMode = false;
+
+  private authForm: FormGroup;
   private itemName: string = "";
   private itemDescription: string = "";
   private lendTime: number = 7;
@@ -34,26 +35,34 @@ export class NewItemPage {
 
   constructor(private db: AngularFireDatabase, private navCtrl: NavController, private camera: Camera,
               private actionSheetCtrl: ActionSheetController, private toastCtrl: ToastController,
-              private loadingCtrl: LoadingController) {
+              private loadingCtrl: LoadingController, private formBuilder: FormBuilder) {
     this._itemRef = this.db.list('/item');
-    firebase.initializeApp(environment.firebase);
+
+    this.authForm = formBuilder.group({
+      itemName: ['', Validators.compose([Validators.required, Validators.maxLength(40)])],
+      itemDescription: ['', Validators.compose([Validators.required, Validators.maxLength(200)])],
+      lendTime: ['7', Validators.compose([Validators.required])],
+      personName: ['Swetha'],
+      personEmail: ['swethaviswanatha2018@u.northwestern.edu']
+
+    });
   }
 
-  addItem() {
+  addItem(value) {
     this._itemRef.push({
-      credit: this.credit,
+      credit: 0,
       // todo wrong url
       image_url: this.itemImgUrl,
-      name: this.itemName,
+      name: value.itemName,
       rating: 0,
       reviews_num: 0,
       status: "on_shell",
       time_created: Date.now(),
-      time_range: this.lendTime,
-      description: this.itemDescription,
+      time_range: value.lendTime,
+      description: value.itemDescription,
       // todo change these after user system is done
-      email: "swethaviswanatha2018@u.northwestern.edu",
-      person_name: "Swetha",
+      email: value.personEmail,
+      person_name: value.personName,
       // todo this should not be here
       radius: 2
     });
@@ -62,7 +71,7 @@ export class NewItemPage {
 
   private uploadImage(imageData){
     // todo should add user directory
-    const images = firebase.storage().ref(`images/${NewItemPage.createFileName()}`);
+    const images = this.db.app.storage().ref(`images/${NewItemPage.createFileName()}`);
     images.putString(imageData, 'base64', {contentType: 'image/jpeg'})
       .then(snapshot=>{
         this.itemImgUrl = snapshot.downloadURL;
