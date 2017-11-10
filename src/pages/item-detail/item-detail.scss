@@ -1,28 +1,30 @@
 page-item-detail {
-  .button-logo {
-    height: 110px;
-
-    button {
-      width: 50px;
-      height: 50px;
+  .time {
+    .button1 {
+      left: 10px;
+      width: 120px;
       background-color: white;
-      outline: none;
-      border: none;
-      color: black;
-      button-inner: 200 * 200;
     }
 
-    img {
-      position: absolute;
-      top: 0;
-      left: 40%;
-      padding: auto;
-      width: 108px;
-      height: 108px;
-
+    .button2 {
+      width: 40px;
+      background-color: white;
     }
+
+    .button3 {
+      left: 26px;
+      width: 120px;
+      background-color: white;
+    }
+
+    .button4 {
+      left: 52px;
+      width: 40px;
+      background-color: white;
+    }
+
   }
-
+  
   .scroll-content {
     img {
       width: 200px;
