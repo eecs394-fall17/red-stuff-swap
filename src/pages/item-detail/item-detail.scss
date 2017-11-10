@@ -1,3 +1,65 @@
 page-item-detail {
+  .time {
+    .button1 {
+      left: 10px;
+      width: 120px;
+      background-color: white;
+    }
 
+    .button2 {
+      width: 40px;
+      background-color: white;
+    }
+
+    .button3 {
+      left: 26px;
+      width: 120px;
+      background-color: white;
+    }
+
+    .button4 {
+      left: 52px;
+      width: 40px;
+      background-color: white;
+    }
+
+  }
+  
+  .scroll-content {
+    img {
+      width: 200px;
+      margin: auto;
+      display: block;
+    }
+
+    h2 {
+      margin-left: 10%;
+    }
+
+    p {
+      margin-left: 10%;
+    }
+
+    button {
+      left: 10%;
+      width: 80%;
+    }
+
+    .button-inner {
+      color: black;
+    }
+
+    .item {
+      left: 5%;
+      img {
+        width: 120px;
+        height: 120px;
+      }
+
+      button {
+        width: 100px;
+      }
+    }
+
+  }
 }
