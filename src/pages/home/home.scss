@@ -36,8 +36,15 @@ page-home {
     left: 80%;
   }
 
+  .item-divider-ios {
+    color: #fbad1b;
+    padding-left: 16px;
+    border-bottom: 1px solid #dedede;
+    font-size: 1.4rem;
+    background-color: #fff;
+  }
+
   .item-divider-md {
-  .item-divider-md, .item-divider-ios {
     color: #fbad1b;
     padding-left: 16px;
     border-bottom: 1px solid #dedede;
