@@ -6,6 +6,7 @@ import {
 import {AngularFireDatabase, AngularFireList} from "angularfire2/database";
 import {Camera} from "@ionic-native/camera";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import * as firebase from "firebase";
 
 /**
  * Generated class for the NewItemPage page.
@@ -44,7 +45,6 @@ export class NewItemPage {
       lendTime: ['7', Validators.compose([Validators.required])],
       personName: ['Swetha'],
       personEmail: ['swethaviswanatha2018@u.northwestern.edu']
-
     });
   }
 
@@ -71,7 +71,7 @@ export class NewItemPage {
 
   private uploadImage(imageData){
     // todo should add user directory
-    const images = this.db.app.storage().ref(`images/${NewItemPage.createFileName()}`);
+    const images = firebase.storage().ref(`images/${NewItemPage.createFileName()}`);
     images.putString(imageData, 'base64', {contentType: 'image/jpeg'})
       .then(snapshot=>{
         this.itemImgUrl = snapshot.downloadURL;
