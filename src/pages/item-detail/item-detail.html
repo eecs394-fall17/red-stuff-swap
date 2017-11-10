@@ -7,52 +7,62 @@
 <ion-header>
   <ion-navbar>
     <ion-title>
-      {{itemName}}
+      Item Details
     </ion-title>
   </ion-navbar>
 </ion-header>
 
 
 <ion-content padding>
-  <img src="assets/imgs/vacuum.jpg">
+  <img class="item-img" [src]="item.image_url">
 
-  <ion-list>
-    <p>Kelly | 2mi away</p>
-    <p>description</p>
-  </ion-list>
+  <h2>{{item.name}}</h2>
 
-  <button ion-button>Request To Borrow</button>
+  <p class="secondary-info">
+    <!-- Hiding rating -->
+    <!--<span>-->
+        <!--<ion-icon *ngFor="let n of stars" [name]="n"></ion-icon>-->
+        <!--<span>{{item.rating}}</span>-->
+    <!--</span>-->
+    {{item.person_name}} | {{item.radius}}mi <i>away</i>
+  </p>
+  <p>{{item.description}}</p>
 
-  <ion-list class="time">
+  <div class="date-time">
     <p>
-      From<button ion-button class="button1">mm/dd/yyyy</button>
-      <button ion-button class="button2">10</button>
-      <button ion-button class="button2">15</button>
-      <button ion-button class="button2">AM</button>
+      <span class="label">From</span>
+      <button ion-button color="dark" outline small (click)="openCalendar('from')">{{fromDate}}</button>
+      <button ion-button color="dark" outline small>
+        <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="fromTime"></ion-datetime>
+      </button>
     </p>
     <p>
-      To
-      <button ion-button class="button3">mm/dd/yyyy</button>
-      <button ion-button class="button4">10</button>
-      <button ion-button class="button4">15</button>
-      <button ion-button class="button4">AM</button>
+      <span class="label">To</span>
+      <button ion-button color="dark" outline small (click)="openCalendar('to')">{{toDate}}</button>
+      <button ion-button color="dark" outline small>
+        <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="toTime"></ion-datetime>
+      </button>
     </p>
-  </ion-list>
+  </div>
 
-  <p><strong>Lender</strong></p>
-  <ion-list>
-    <ion-item>
-      <ion-avatar item-start>
-        <img src="assets/imgs/logo.png"/>
-      </ion-avatar>
-      <h2>Kelly Reiser</h2>
-      <p>Kellaner</p>
-      <p>Chicago, IL</p>
-      <p>
-        <ion-icon name="mail"></ion-icon>
-        <button>contact lender</button>
-      </p>
-    </ion-item>
-  </ion-list>
+  <button ion-button block class="request-to-borrow" [outline]="requested" [ngClass]="{'requested':requested}" (click)="requestItem()">
+    {{requested? "Request Sent!":"Request To Borrow"}}
+  </button>
+
+  <h3>Lender</h3>
+  <button ion-item detail-none no-lines class="lender-info" (click)="contactLender()">
+    <ion-avatar item-start>
+      <img src="assets/imgs/logo.png"/>
+    </ion-avatar>
+    <h4>{{item.person_name}}</h4>
+    <!-- We don't have info like this right now, skipping -->
+    <!--<p>Kellaner</p>-->
+    <!--<p>Chicago, IL</p>-->
+    <p>{{item.email}}</p>
+    <h5>
+      <ion-icon name="ios-mail-outline"></ion-icon>
+      contact lender
+    </h5>
+  </button>
 
 </ion-content>
