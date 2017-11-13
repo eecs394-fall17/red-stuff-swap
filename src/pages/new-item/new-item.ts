@@ -7,6 +7,7 @@ import {AngularFireDatabase, AngularFireList} from "angularfire2/database";
 import {Camera} from "@ionic-native/camera";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import * as firebase from "firebase";
+import {UserService} from "../../providers/user-service/user-service";
 
 /**
  * Generated class for the NewItemPage page.
@@ -36,15 +37,16 @@ export class NewItemPage {
 
   constructor(private db: AngularFireDatabase, private navCtrl: NavController, private camera: Camera,
               private actionSheetCtrl: ActionSheetController, private toastCtrl: ToastController,
-              private loadingCtrl: LoadingController, private formBuilder: FormBuilder) {
+              private loadingCtrl: LoadingController, private formBuilder: FormBuilder,
+              private user: UserService) {
     this._itemRef = this.db.list('/item');
 
     this.authForm = formBuilder.group({
       itemName: ['', Validators.compose([Validators.required, Validators.maxLength(40)])],
       itemDescription: ['', Validators.compose([Validators.required, Validators.maxLength(200)])],
       lendTime: ['7', Validators.compose([Validators.required])],
-      personName: ['Swetha'],
-      personEmail: ['swethaviswanatha2018@u.northwestern.edu']
+      personName: [user.getCurrentUser().user_name],
+      personEmail: [user.getCurrentUser().user_email]
     });
   }
 
