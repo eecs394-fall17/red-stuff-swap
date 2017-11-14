@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-
-import {Observable} from "rxjs/Observable";
-import { AngularFireDatabase } from 'angularfire2/database';
 import {IonicPage} from "ionic-angular";
+
+import { AngularFireDatabase, AngularFireList } from 'angularfire2/database';
+import { Observable } from "rxjs/Observable";
+import 'rxjs/add/operator/map';
 
 @IonicPage()
 @Component({
@@ -11,10 +12,13 @@ import {IonicPage} from "ionic-angular";
 })
 export class HomePage {
 
-	_items: Observable<any[]>;
+	_itemsRef: AngularFireList<any>;
+	_items: Observable<any[]>
 
   constructor(private db:AngularFireDatabase) {
-    this._items = this.db.list('/item').snapshotChanges().map(changes => {
-      return changes.map(c=>({key:c.payload.key, ...c.payload.val()}))
+    this._itemsRef = this.db.list('/item');
+    this._items = this._itemsRef.snapshotChanges().map(changes => {
+      return changes.map(c => ({ key: c.payload.key, ...c.payload.val() }));
     });
+  }
 }

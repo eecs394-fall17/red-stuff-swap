@@ -7,37 +7,60 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>Edit Item</ion-title>
+    <ion-title>Edit an Item</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
-  <ion-item no-lines>
-    <ion-label stacked>Name</ion-label>
-    <ion-input type="text" placeholder="Item Name" [(ngModel)]="data.name"></ion-input>
-  </ion-item>
-  <ion-item no-lines>
-    <ion-label stacked>Description</ion-label>
-    <ion-textarea placeholder="Enter a description" [(ngModel)]="data.description"></ion-textarea>
-  </ion-item>
-  <ion-item no-lines>
-    <ion-label stacked>Image</ion-label>
-  </ion-item>
-  <ion-item no-lines class="non-title-item">
-    <div class="image-placeholder" (click)="uploadImage()" >
-      <ion-icon name="add" *ngIf="data.image_url == ''"></ion-icon>
-      <img *ngIf="data.image_url != ''" [src]="data.image_url">
-    </div>
-  </ion-item>
-  <ion-item no-lines>
-    <ion-label stacked>Lend Time (days)</ion-label>
-    <ion-input type="number" [(ngModel)]="data.time_range"></ion-input>
-  </ion-item>
-  <ion-item no-lines>
-    <ion-label stacked>Credits</ion-label>
-    <ion-input type="number" [(ngModel)]="data.credit"></ion-input>
-  </ion-item>
-  <button ion-button block (click)="editItem()">Done Editing</button>
+
+  <form [formGroup]="authForm" (ngSubmit)="editItem(authForm.value)">
+
+    <ion-item class="text-box" no-lines *ngIf="developerMode">
+      <ion-input type="text" placeholder="Lender Name" formControlName="personName"></ion-input>
+    </ion-item>
+    <ion-item class="text-box" no-lines *ngIf="developerMode">
+      <ion-input type="text" placeholder="Lender Email" formControlName="personEmail"></ion-input>
+    </ion-item>
+
+    <ion-item class="text-box" no-lines>
+      <ion-input type="text" placeholder="Item Name" formControlName="itemName"></ion-input>
+    </ion-item>
+    <ion-item class="hint-text" *ngIf="authForm.controls.itemName.hasError('maxlength') && authForm.controls.itemName.touched">
+      <p>Sorry, maximum item name length is 40!</p>
+    </ion-item>
+    <ion-item class="text-box" no-lines>
+      <ion-textarea placeholder="Item Description" formControlName="itemDescription"></ion-textarea>
+    </ion-item>
+    <ion-item class="hint-text" *ngIf="authForm.controls.itemDescription.hasError('maxlength') && authForm.controls.itemDescription.touched">
+      <p>Sorry, maximum description length is 200!</p>
+    </ion-item>
+    <ion-item no-lines>
+      <ion-label stacked>Image</ion-label>
+    </ion-item>
+    <ion-item no-lines class="non-title-item">
+      <div class="image-placeholder" (click)="pickImage()">
+        <ion-icon name="add" *ngIf="data.image_url == ''"></ion-icon>
+        <div class="image" *ngIf="data.image_url != ''" [ngStyle]="{'background-image':'url('+data.image_url+')'}"></div>
+      </div>
+    </ion-item>
+    <ion-item no-lines>
+      <ion-label>Max Lend Time</ion-label>
+      <ion-select formControlName="lendTime" interface="popover">
+        <ion-option value="1">1 day</ion-option>
+        <ion-option value="2">2 days</ion-option>
+        <ion-option value="3">3 days</ion-option>
+        <ion-option value="4">4 days</ion-option>
+        <ion-option value="5">5 days</ion-option>
+        <ion-option value="6">6 days</ion-option>
+        <ion-option value="7">7 days</ion-option>
+        <ion-option value="8">8 days</ion-option>
+        <ion-option value="9">9 days</ion-option>
+        <ion-option value="10">10 days</ion-option>
+      </ion-select>
+    </ion-item>
+    <button ion-button block [disabled]="!authForm.valid || itemImgUrl == ''" class="edit-btn" type="submit">Edit Item</button>
+  </form>
+  <p (click)="developerMode = !developerMode">Developer Mode</p>
 </ion-content>

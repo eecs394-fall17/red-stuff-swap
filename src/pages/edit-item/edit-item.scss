@@ -1,10 +1,34 @@
 page-edit-item {
   ion-content{
     ion-item{
+      &.text-box{
+        .item-inner{
+          .input{
+            border: 1px solid rgba(0, 0, 0, 0.7);
+            .text-input{
+              margin: 11px 8px 11px 8px;
+            }
+          }
+        }
+        margin-bottom: 4px;
+      }
       ion-textarea{
         textarea{
           min-height: 16rem;
           height: 16rem;
+        }
+      }
+      .label-ios[stacked]{
+        font-size: 1.6rem;
+      }
+      &.hint-text{
+        min-height: 2rem;
+        ion-label{
+          margin: 5px 4px 5px 0;
+          p{
+            font-size: 1.3rem;
+            color: map-get($colors, danger);
+          }
         }
       }
     }
@@ -18,24 +42,29 @@ page-edit-item {
         height: 96px;
         width: 96px;
         border: dashed rgba(0, 0, 0, 0.4) 2px;
-        border-radius: 6px;
-        padding: 8px;
+        //border-radius: 6px;
+        padding: 4px;
         text-align: center;
-        img{
-          min-height: calc(100% - 20px) !important;
-          width: auto !important;
+        .image{
           border-radius: 4px;
-          display:block;
+          height: 100%;
+          background-position: center;
+          background-repeat: no-repeat;
+          background-size: contain;
+          width:100%;
         }
         ion-icon{
           color: rgba(0, 0, 0, 0.4);
-          min-height: calc(100% - 20px) !important;
+          min-height: calc(100% - 12px) !important;
           width: auto !important;
           display:block;
-          line-height: 76px;
+          line-height: 84px;
           font-size: 2.5em;
         }
       }
+    }
+    .edit-btn{
+      margin-top: 12px;
     }
   }
 }
