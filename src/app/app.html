@@ -1,7 +1,7 @@
 <ion-header class="app-header">
   <ion-navbar>
     <ion-buttons left>
-      <button ion-button icon-only>
+      <button ion-button icon-only ion-long-press (click)="showProfile()" (onPressing)="switchUserEditor()">
         <ion-icon name="ios-person-outline"></ion-icon>
       </button>
     </ion-buttons>
@@ -13,4 +13,27 @@
     </ion-buttons>
   </ion-navbar>
 </ion-header>
+<div class="user-info-editor" *ngIf="isUserInfoEditorVisible">
+  <ion-list>
+    <ion-list-header>
+      User #1
+    </ion-list-header>
+    <ion-item no-lines>
+      <ion-input type="text" placeholder="User #1 Name" [(ngModel)]="users.userA.user_name"></ion-input>
+    </ion-item>
+    <ion-item no-lines>
+      <ion-input type="text" placeholder="User #1 Email" [(ngModel)]="users.userA.user_email"></ion-input>
+    </ion-item>
+    <ion-list-header>
+      User #2
+    </ion-list-header>
+    <ion-item no-lines>
+      <ion-input type="text" placeholder="User #2 Name" [(ngModel)]="users.userB.user_name"></ion-input>
+    </ion-item>
+    <ion-item no-lines>
+      <ion-input type="text" placeholder="User #2 Email" [(ngModel)]="users.userB.user_email"></ion-input>
+    </ion-item>
+    <button ion-button block (click)="applyUserInfo()">Apply</button>
+  </ion-list>
+</div>
 <ion-nav [root]="rootPage" class="app-content"></ion-nav>

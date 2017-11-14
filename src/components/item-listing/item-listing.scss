@@ -33,16 +33,9 @@ item-listing {
         p{
           font-size: 1.2rem;
         }
-        h4{
-          font-size: 1.2rem;
-          margin-top: 8px;
-          color: map-get($colors, dark-gray);
-          span{
-            color: map-get($colors, secondary);
-            span{
-              color: map-get($colors, primary);
-            }
-          }
+        .description{
+          min-height: 3rem;
+          max-height: 4rem;
         }
         button {
           &.button-round-md {

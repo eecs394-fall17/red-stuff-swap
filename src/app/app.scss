@@ -44,9 +44,6 @@
     .toolbar-content{
       text-align: center;
       img {
-        position: absolute;
-        top: 0;
-        left: 40%;
         padding: 8px;
         width: 76px;
         height: 76px;
@@ -68,6 +65,19 @@
 .app-content{
   top: 80px;
   height: calc(100% - 80px);
+}
+
+.user-info-editor{
+  float: left;
+  position: absolute;
+  z-index: 999;
+  background: white;
+  width: 100%;
+  padding: 10px 16px 10px 16px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  ion-list{
+    margin: 0;
+  }
 }
 
 ion-header{

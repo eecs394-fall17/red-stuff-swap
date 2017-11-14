@@ -5,14 +5,64 @@
   Ionic pages and navigation.
 -->
 <ion-header>
-
   <ion-navbar>
-    <ion-title>{{itemName}}</ion-title>
+    <ion-title>
+      Item Details
+    </ion-title>
   </ion-navbar>
-
 </ion-header>
 
 
 <ion-content padding>
+  <img class="item-img" [src]="item.image_url">
+
+  <h2>{{item.name}}</h2>
+
+  <p class="secondary-info">
+    <!-- Hiding rating -->
+    <!--<span>-->
+        <!--<ion-icon *ngFor="let n of stars" [name]="n"></ion-icon>-->
+        <!--<span>{{item.rating}}</span>-->
+    <!--</span>-->
+    {{item.person_name}} | {{item.radius}}mi <i>away</i>
+  </p>
+  <p>{{item.description}}</p>
+
+  <div class="date-time">
+    <p>
+      <span class="label">From</span>
+      <button ion-button color="dark" outline small (click)="openCalendar('from')">{{fromDate}}</button>
+      <button ion-button color="dark" outline small>
+        <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="fromTime"></ion-datetime>
+      </button>
+    </p>
+    <p>
+      <span class="label">To</span>
+      <button ion-button color="dark" outline small (click)="openCalendar('to')">{{toDate}}</button>
+      <button ion-button color="dark" outline small>
+        <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="toTime"></ion-datetime>
+      </button>
+    </p>
+  </div>
+
+  <button ion-button block class="request-to-borrow" [outline]="requested" [ngClass]="{'requested':requested}" (click)="requestItem()">
+    {{requested? "Request Sent!":"Request To Borrow"}}
+  </button>
+
+  <h3>Lender</h3>
+  <button ion-item detail-none no-lines class="lender-info" (click)="contactLender()">
+    <ion-avatar item-start>
+      <img src="assets/imgs/logo.png"/>
+    </ion-avatar>
+    <h4>{{item.person_name}}</h4>
+    <!-- We don't have info like this right now, skipping -->
+    <!--<p>Kellaner</p>-->
+    <!--<p>Chicago, IL</p>-->
+    <p>{{item.email}}</p>
+    <h5>
+      <ion-icon name="ios-mail-outline"></ion-icon>
+      contact lender
+    </h5>
+  </button>
 
 </ion-content>

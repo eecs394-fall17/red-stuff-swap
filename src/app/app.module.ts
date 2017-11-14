@@ -14,6 +14,9 @@ import {File} from "@ionic-native/file";
 import {Transfer} from "@ionic-native/transfer";
 import {FilePath} from "@ionic-native/file-path";
 import {Camera} from "@ionic-native/camera";
+import { CalendarModule } from "ion2-calendar";
+import { UserService } from '../providers/user-service/user-service';
+import {LongPressModule} from "ionic-long-press";
 
 @NgModule({
   declarations: [
@@ -22,9 +25,11 @@ import {Camera} from "@ionic-native/camera";
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
-    AngularFireModule.initializeApp(environment.firebase, 'stuff-swap'),
+    AngularFireModule.initializeApp(environment.firebase),
     AngularFireDatabaseModule,
-    AngularFireAuthModule
+    AngularFireAuthModule,
+    CalendarModule,
+    LongPressModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -39,7 +44,8 @@ import {Camera} from "@ionic-native/camera";
     Transfer,
     FilePath,
     Camera,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    UserService
   ]
 })
 export class AppModule {}
