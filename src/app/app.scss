@@ -61,6 +61,10 @@
   }
 }
 
+.platform-ios.platform-cordova:not(.fullscreen) .app-header {
+     margin-top: 20px; /*todo: change to $ios-statusbar-height?*/
+}
+
 .app-content{
   top: 80px;
   height: calc(100% - 80px);
