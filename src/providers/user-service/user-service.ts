@@ -35,4 +35,14 @@ export class UserService {
   public getUsers(){
     return {userA: this._userA, userB: this._userB};
   }
+
+  public getUserById(id){
+    if(id == 0){
+      return this._userA;
+    }else if(id == 1){
+      return this._userB;
+    }else{
+      return null;
+    }
+  }
 }
