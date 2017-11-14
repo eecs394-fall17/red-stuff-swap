@@ -4,6 +4,7 @@ import {
 } from 'ionic-angular';
 import {AngularFireDatabase, AngularFireList} from "angularfire2/database";
 import {Camera} from "@ionic-native/camera";
+import * as firebase from "firebase";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 
 /**
@@ -29,8 +30,8 @@ export class EditItemPage {
   data: any;
 
   constructor(
-    private db:AngularFireDatabase, 
-    private navCtrl: NavController, 
+    private db:AngularFireDatabase,
+    private navCtrl: NavController,
     public navParams: NavParams,
     private camera: Camera,
     private actionSheetCtrl: ActionSheetController,
@@ -51,7 +52,7 @@ export class EditItemPage {
   }
 
   editItem(value){
-  	this._itemRef.update(this.data.key, {
+    this._itemRef.update(this.data.key, {
       name: value.itemName,
       description: value.itemDescription,
       image_url: this.data.image_url,
@@ -64,7 +65,7 @@ export class EditItemPage {
 
   private uploadImage(imageData){
     // todo should add user directory
-    const images = this.db.app.storage().ref(`images/${EditItemPage.createFileName()}`);
+    const images = firebase.storage().ref(`images/${EditItemPage.createFileName()}`);
     images.putString(imageData, 'base64', {contentType: 'image/jpeg'})
       .then(snapshot=>{
         this.data.image_url = snapshot.downloadURL;
