@@ -11,10 +11,11 @@ import {IonicPage} from "ionic-angular";
 })
 export class HomePage {
 
-	_items: Observable<any[]>;
+  _items: Observable<any[]>;
 
-  constructor(private db:AngularFireDatabase) {
+  constructor(private db: AngularFireDatabase) {
     this._items = this.db.list('/item').snapshotChanges().map(changes => {
-      return changes.map(c=>({key:c.payload.key, ...c.payload.val()}))
+      return changes.map(c => ({key: c.payload.key, ...c.payload.val()}))
     });
+  }
 }
