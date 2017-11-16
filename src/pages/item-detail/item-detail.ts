@@ -4,6 +4,7 @@ import {CalendarModal, CalendarModalOptions} from "ion2-calendar";
 import {AngularFireDatabase, AngularFireList} from "angularfire2/database";
 import * as firebase from "firebase";
 import {UserService} from "../../providers/user-service/user-service";
+import { Observable } from "rxjs/Observable";
 /**
  * Generated class for the ItemDetailPage page.
  *
@@ -20,6 +21,7 @@ export class ItemDetailPage {
 
 	item: any;
   stars = ["star", "star", "star", "star", "star"];
+  _items2: Observable<any[]>;
 
   requested = false;
   private fromDate: string;
@@ -35,11 +37,22 @@ export class ItemDetailPage {
   private owner_id: string;
   private number: number;
   private item_id_1: string;
+  private hourAndMinute: string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private modalCtrl: ModalController,
               private toastCtrl: ToastController, private db: AngularFireDatabase) {
   	this.item= this.navParams.get('item');
+  	this.number = 0;
+    let us = new UserService();
+    this.borrower_id = us.getCurrentUser().user_id;
     this._itemRef = this.db.list('/order');
+    this._items2 = this._itemRef.snapshotChanges().map(changes => {
+      return changes.map(c => ({ key: c.payload.key, ...c.payload.val() }));
+    });
+    var ref = firebase.database().ref("/order");
+    ref.orderByChild('borrower_id').equalTo(1).on("child_added", function(snapshot) {
+      console.log(snapshot.key);
+    });
   }
 
   ngOnInit(){
@@ -67,9 +80,6 @@ export class ItemDetailPage {
     this.fromDate_1 = timer.getTime();
     this.toDate_1 = timer.getTime();
     this.owner_id = this.item.person_id;
-    let us = new UserService();
-    this.borrower_id = us.getCurrentUser().user_id;
-    this.number = 0;
     this.item_id_1 = this.item.key;
   }
 
@@ -78,6 +88,7 @@ export class ItemDetailPage {
       this.number = 1;
       this.requested = !this.requested;
       this._itemRef.push({
+        item_id: this.item.key,
         end_date: this.toDate_1,
         time_created: this.createTime,
         owner_id: this.owner_id,
@@ -107,12 +118,12 @@ export class ItemDetailPage {
       if(date != null){
         if(label == 'from'){
           this.fromDate = `${date.months}/${date.date}/${date.years}`;
-          var date1 = `${date.years}-${date.months}-${date.date} 00:00`;
+          var date1 = `${date.years}-${date.months}-${date.date} ${date.hour}:${date.minute}`;
           var date2 = new Date(Date.parse(date1.replace(/-/g, "/")));
           this.fromDate_1 = date2.getTime();
         }else{
           this.toDate = `${date.months}/${date.date}/${date.years}`;
-          var date3 = `${date.years}-${date.months}-${date.date} 00:00`;
+          var date3 = `${date.years}-${date.months}-${date.date}  ${date.hour}:${date.minute}`;
           var date4 = new Date(Date.parse(date3.replace(/-/g, "/")));
           this.fromDate_1 = date4.getTime();
         }
