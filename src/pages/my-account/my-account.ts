@@ -14,12 +14,19 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
   templateUrl: 'my-account.html',
 })
 export class MyAccountPage {
+	myItemsRoot = "MyItemsPage";
+	activityRoot = "ActivityPage";
+	activityNumber = 5;
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
 
   goToItemList(){
   	this.navCtrl.pop({animate: true, direction: 'forward'});
+  }
+
+  getActivityNumber(){
+  	return this.activityNumber;
   }
 
 }
