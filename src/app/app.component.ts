@@ -34,6 +34,7 @@ export class MyApp {
   }
 
   showProfile(){
+    this.app.getRootNav().push("MyAccountPage", {},{animate: true, direction: 'back'});
     // which is now switchUser()!
     // this.presentToast(`This function is still under development.`);
     if(!this.isUserInfoEditorVisible){
