@@ -31,22 +31,22 @@
   <div class="date-time">
     <p>
       <span class="label">From</span>
-      <button ion-button color="dark" outline small (click)="openCalendar('from')">{{fromDate}}</button>
+      <button ion-button color="dark" outline small (click)="openCalendar()">{{fromDate}}</button>
       <button ion-button color="dark" outline small>
         <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="fromTime"></ion-datetime>
       </button>
     </p>
     <p>
       <span class="label">To</span>
-      <button ion-button color="dark" outline small (click)="openCalendar('to')">{{toDate}}</button>
+      <button ion-button color="dark" outline small (click)="openCalendar()">{{toDate}}</button>
       <button ion-button color="dark" outline small>
         <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="toTime"></ion-datetime>
       </button>
     </p>
   </div>
 
-  <button ion-button block class="request-to-borrow" [outline]="requested" [ngClass]="{'requested':requested}" (click)="requestItem()">
-    {{requested? "Request Sent!":"Request To Borrow"}}
+  <button ion-button block class="request-to-borrow" [outline]="requested || requesting" [ngClass]="{'requested':requested, 'requesting': requesting}" (click)="requestItem()">
+    {{requesting? "Requesting" : requested? "Request Sent!":"Request To Borrow"}}
   </button>
 
   <h3>Lender</h3>
