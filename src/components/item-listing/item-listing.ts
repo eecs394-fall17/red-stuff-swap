@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
+import { AngularFireList, AngularFireDatabase } from "angularfire2/database";
 
 /**
  * Generated class for the ItemListingComponent component.
@@ -15,7 +16,11 @@ export class ItemListingComponent {
 
   @Input('data') data: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {}
+  private _itemsRef: AngularFireList<any>;
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, private db:AngularFireDatabase) {
+    this._itemsRef = this.db.list('/item');
+  }
 
   showItemDetails() {
     this.navCtrl.push("ItemDetailPage", {
@@ -27,5 +32,9 @@ export class ItemListingComponent {
     this.navCtrl.push("EditItemPage", {
       data: this.data,
     });
+  }
+
+  deleteItem(){
+    this._itemsRef.remove(this.data.key);
   }
 }
