@@ -17,6 +17,7 @@ import {Camera} from "@ionic-native/camera";
 import { CalendarModule } from "ion2-calendar";
 import { UserService } from '../providers/user-service/user-service';
 import {LongPressModule} from "ionic-long-press";
+import {MomentModule} from "angular2-moment";
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import {LongPressModule} from "ionic-long-press";
     AngularFireDatabaseModule,
     AngularFireAuthModule,
     CalendarModule,
-    LongPressModule
+    LongPressModule,
+    MomentModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [

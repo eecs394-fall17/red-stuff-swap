@@ -12,8 +12,8 @@ import 'rxjs/add/operator/map';
 })
 export class HomePage {
 
-	_itemsRef: AngularFireList<any>;
-	_items: Observable<any[]>
+  _itemsRef: AngularFireList<any>;
+  _items: Observable<any[]>
 
   constructor(private db:AngularFireDatabase) {
     this._itemsRef = this.db.list('/item');

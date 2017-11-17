@@ -112,7 +112,7 @@ export class NewItemPage {
   takePicture(sourceType) {
     // Create options for the Camera Dialog
     let options = {
-      quality: 100,
+      quality: 30,
       sourceType: sourceType,
       saveToPhotoAlbum: false,
       correctOrientation: true,
