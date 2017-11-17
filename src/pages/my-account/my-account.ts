@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {IonicPage, NavController, NavParams, ToastController} from 'ionic-angular';
+import {UserService} from "../../providers/user-service/user-service";
 
 /**
  * Generated class for the MyAccountPage page.
@@ -14,11 +15,19 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
   templateUrl: 'my-account.html',
 })
 export class MyAccountPage {
+  users: any;
+  isUserInfoEditorVisible: boolean = false;
+
 	myItemsRoot = "MyItemsPage";
 	activityRoot = "ActivityPage";
 	activityNumber = 5;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private user: UserService,
+              private toastCtrl: ToastController) {
+  }
+
+  ngOnInit(){
+    this.users = this.user.getUsers();
   }
 
   goToItemList(){
@@ -27,6 +36,32 @@ export class MyAccountPage {
 
   getActivityNumber(){
   	return this.activityNumber;
+  }
+
+  switchUser(){
+    if(!this.isUserInfoEditorVisible){
+      this.user.switchUser();
+      this.presentToast(`Current user is: ${this.user.getCurrentUser().user_name}`);
+    }
+  }
+
+  switchUserEditor(){
+    this.isUserInfoEditorVisible = true;
+  }
+
+  applyUserInfo(){
+    this.user.changeUserInfo(this.users);
+    this.isUserInfoEditorVisible = false;
+    this.presentToast(`Current user is: ${this.user.getCurrentUser().user_name}`);
+  }
+
+  private presentToast(text) {
+    let toast = this.toastCtrl.create({
+      message: text,
+      duration: 3000,
+      position: 'bottom'
+    });
+    toast.present();
   }
 
 }

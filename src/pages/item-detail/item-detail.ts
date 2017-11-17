@@ -73,27 +73,30 @@ export class ItemDetailPage {
 
     this.db.list( `/order`,
       ref => ref.orderByChild(`item_id`).equalTo(this.item.key))
-      .valueChanges().subscribe( orders => {
-        this._disabledDates = [];
-        const dayLength = 1000 * 60 * 60 * 24;
-        orders.forEach(order => {
-          if(order.status != `requested` && order.end_time > Date.now()){
-            const from = new Date(order.start_time);
-            const to = new Date(order.end_time);
+      .snapshotChanges().map(changes => {
+      return changes.map(c => ({ key: c.payload.key, ...c.payload.val()}));
+    }).subscribe( orders => {
+      // console.log(orders);
+      this._disabledDates = [];
+      const dayLength = 1000 * 60 * 60 * 24;
+      orders.forEach(order => {
+        if(order.status != `requested` && order.end_time > Date.now()){
+          const from = new Date(order.start_time);
+          const to = new Date(order.end_time);
 
-            const range = to.valueOf() - from.valueOf();
-            let days = (range - range % dayLength) / dayLength;
-            if(range % dayLength != 0) days += 1;
+          const range = to.valueOf() - from.valueOf();
+          let days = (range - range % dayLength) / dayLength;
+          if(range % dayLength != 0) days += 1;
 
-            for(let i = 0; i< days; i++){
-              this._disabledDates.push({
-                date: new Date(from.valueOf() + i * dayLength),
-                disable: true
-              })
-            }
+          for(let i = 0; i< days; i++){
+            this._disabledDates.push({
+              date: new Date(from.valueOf() + i * dayLength),
+              disable: true
+            })
           }
-        });
-        this.checkDateRange();
+        }
+      });
+      this.checkDateRange();
     });
   }
 
