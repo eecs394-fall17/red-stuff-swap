@@ -1,0 +1,26 @@
+<!--
+  Generated template for the MyAccountPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar [hideBackButton]="true">
+    <ion-title>My Account</ion-title>
+    <ion-buttons end>
+    	<button ion-button (click)="goToItemList()">
+    		Item List
+    		<ion-icon name="arrow-forward"></ion-icon>
+    	</button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content padding>
+	<ion-tabs tabsPlacement="top" tabsHighlight="true">
+		<ion-tab [root]="myItemsRoot" tabTitle="My Items"></ion-tab>
+		<ion-tab [root]="activityRoot" tabTitle="Activity" tabBadgeStyle="danger" [tabBadge]="getActivityNumber()"></ion-tab>
+	</ion-tabs>
+</ion-content>
