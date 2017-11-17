@@ -29,23 +29,24 @@
   <p>{{item.description}}</p>
 
   <div class="date-time">
+    <h5 *ngIf="datePickerHint != ''">{{datePickerHint}}</h5>
     <p>
       <span class="label">From</span>
       <button ion-button color="dark" outline small (click)="openCalendar()">{{fromDate}}</button>
       <button ion-button color="dark" outline small>
-        <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="fromTime"></ion-datetime>
+        <ion-datetime displayFormat="HH:mm" pickerFormat="HH mm" [(ngModel)]="fromTime" (ngModelChange)="checkDateRange()"></ion-datetime>
       </button>
     </p>
     <p>
       <span class="label">To</span>
       <button ion-button color="dark" outline small (click)="openCalendar()">{{toDate}}</button>
       <button ion-button color="dark" outline small>
-        <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="toTime"></ion-datetime>
+        <ion-datetime displayFormat="HH:mm" pickerFormat="HH mm" [(ngModel)]="toTime" (ngModelChange)="checkDateRange()"></ion-datetime>
       </button>
     </p>
   </div>
 
-  <button ion-button block class="request-to-borrow" [outline]="requested || requesting" [ngClass]="{'requested':requested, 'requesting': requesting}" (click)="requestItem()">
+  <button ion-button block class="request-to-borrow" [outline]="requested || requesting || buttonDisabled" [ngClass]="{'requested':requested, 'requesting': !requested && buttonDisabled ||requesting }" (click)="requestItem()">
     {{requesting? "Requesting" : requested? "Request Sent!":"Request To Borrow"}}
   </button>
 

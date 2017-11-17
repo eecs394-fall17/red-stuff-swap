@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import {IonicPage, ModalController, NavController, NavParams, ToastController} from 'ionic-angular';
-import {CalendarModal, CalendarModalOptions} from "ion2-calendar";
+import {CalendarModal, CalendarModalOptions, DayConfig} from "ion2-calendar";
 import {AngularFireDatabase, AngularFireList} from "angularfire2/database";
 import * as firebase from "firebase";
 import {UserService} from "../../providers/user-service/user-service";
@@ -25,11 +25,15 @@ export class ItemDetailPage {
 
   requested = false;
   requesting = false;
+  buttonDisabled = false;
+  datePickerHint = `Pick up dates of borrow and return first`;
 
   private _orderRef: AngularFireList<any>;
   private _orders: Observable<any[]>;
   private _userRelatedOrders: Observable<any[]>;
   private _relatedOrders: Observable<any[]>;
+  private _disabledDates: DayConfig[] = [];
+  private _canSelectDate = true;
 
   private fromDate: string;
   private fromDateRaw: Date;
@@ -65,7 +69,7 @@ export class ItemDetailPage {
       const now = Date.now();
       for (let i = 0; i < orders.length; i++){
         let order = orders[i];
-        if (order.start_time > now){
+        if (order.start_time > now && order.status == `requested`){
           this.requested = true;
           const from = new Date(order.start_time);
           const to = new Date(order.end_time);
@@ -74,11 +78,38 @@ export class ItemDetailPage {
           this.toTime = new Date(to.valueOf() - from.getTimezoneOffset() * 60000).toISOString();
           this.fromDate = `${from.getMonth() + 1}/${from.getDate()}/${from.getFullYear()}`;
           this.fromDateRaw = new Date(this.fromDate);
-          this.toDate = `${to.getMonth() + 1}/${to.getDate() + 1}/${to.getFullYear()}`;
+          this.toDate = `${to.getMonth() + 1}/${to.getDate()}/${to.getFullYear()}`;
           this.toDateRaw = new Date(this.toDate);
+          this.buttonDisabled = true;
+          this._canSelectDate = false;
           break;
         }
       }
+    });
+
+    this.db.list( `/order`,
+      ref => ref.orderByChild(`item_id`).equalTo(this.item.key))
+      .valueChanges().subscribe( orders => {
+        this._disabledDates = [];
+        const dayLength = 1000 * 60 * 60 * 24;
+        orders.forEach(order => {
+          if(order.status != `requested` && order.end_time > Date.now()){
+            const from = new Date(order.start_time);
+            const to = new Date(order.end_time);
+
+            const range = to.valueOf() - from.valueOf();
+            let days = (range - range % dayLength) / dayLength;
+            if(range % dayLength != 0) days += 1;
+
+            for(let i = 0; i< days; i++){
+              this._disabledDates.push({
+                date: new Date(from.valueOf() + i * dayLength),
+                disable: true
+              })
+            }
+          }
+        });
+        this.checkDateRange();
     });
   }
 
@@ -103,13 +134,12 @@ export class ItemDetailPage {
     this.toTime = new Date(Date.now() - timer.getTimezoneOffset() * 60000).toISOString();
     this.fromDate = `${timer.getMonth() + 1}/${timer.getDate()}/${timer.getFullYear()}`;
     this.fromDateRaw = new Date(this.fromDate);
-    this.toDate = `${timer.getMonth() + 1}/${timer.getDate() + 1}/${timer.getFullYear()}`;
+    this.toDate = `${timer.getMonth() + 1}/${timer.getDate()}/${timer.getFullYear()}`;
     this.toDateRaw = new Date(this.toDate);
   }
 
   requestItem(){
-    // todo use Date.parse('Thu, 01 Jan 1970 00:00:00 GMT-0400') to parse time data
-    // source: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse
+    if(this.buttonDisabled) return;
 
     let fTime = new Date(this.fromTime);
     let tTime = new Date(this.toTime);
@@ -133,9 +163,12 @@ export class ItemDetailPage {
   }
 
   openCalendar() {
+    if (!this._canSelectDate) return;
+
     const options: CalendarModalOptions = {
       title: 'PICK BORROW DATE',
       pickMode: 'range',
+      daysConfig: this._disabledDates,
       defaultDateRange: {
         from: this.fromDateRaw,
         to: this.toDateRaw
@@ -155,8 +188,34 @@ export class ItemDetailPage {
         this.fromDateRaw = from.dateObj;
         this.toDate = `${to.months}/${to.date}/${to.years}`;
         this.toDateRaw = to.dateObj;
+        this.checkDateRange();
       }
     })
+  }
+
+  checkDateRange(){
+    const from = this.fromDateRaw.valueOf();
+    const to = this.toDateRaw.valueOf();
+    for(let i = 0; i<this._disabledDates.length;i++){
+      const date = this._disabledDates[i].date.valueOf();
+      if(date > from && date < to){
+        this.buttonDisabled = true;
+        this.datePickerHint = `Cannot select dates including item unavailable`;
+        return;
+      }
+    }
+    this.buttonDisabled = false;
+    this.datePickerHint = ``;
+    this.checkTime(from, to);
+  }
+
+  checkTime(from, to){
+    if(from == to){
+      if(new Date(this.fromTime).valueOf() >= new Date(this.toTime).valueOf()){
+        this.buttonDisabled = true;
+        this.datePickerHint = `Borrow time is ahead of return time`;
+      }
+    }
   }
 
   contactLender(){
