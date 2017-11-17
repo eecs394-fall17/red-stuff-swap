@@ -2,10 +2,9 @@ import { Component } from '@angular/core';
 import {IonicPage, ModalController, NavController, NavParams, ToastController} from 'ionic-angular';
 import {CalendarModal, CalendarModalOptions, DayConfig} from "ion2-calendar";
 import {AngularFireDatabase, AngularFireList} from "angularfire2/database";
-import * as firebase from "firebase";
 import {UserService} from "../../providers/user-service/user-service";
-import { Observable } from "rxjs/Observable";
 import * as moment from 'moment';
+import {EmailComposer} from "@ionic-native/email-composer";
 /**
  * Generated class for the ItemDetailPage page.
  *
@@ -29,9 +28,6 @@ export class ItemDetailPage {
   datePickerHint = `Pick up dates of borrow and return first`;
 
   private _orderRef: AngularFireList<any>;
-  private _orders: Observable<any[]>;
-  private _userRelatedOrders: Observable<any[]>;
-  private _relatedOrders: Observable<any[]>;
   private _disabledDates: DayConfig[] = [];
   private _canSelectDate = true;
 
@@ -42,24 +38,12 @@ export class ItemDetailPage {
   private toDateRaw: Date;
   private toTime: string;
 
-  // private createTime: number;
-  // private item_id: string;
-  // private fromDate_1: number;
-  // private toDate_1: number;
-  // private borrower_id: number;
-  // private owner_id: string;
-  // private number: number;
-  // private item_id_1: string;
-  // private hourAndMinute: string;
-
   constructor(public navCtrl: NavController, public navParams: NavParams, private modalCtrl: ModalController,
-              private toastCtrl: ToastController, private db: AngularFireDatabase, private user: UserService) {
+              private toastCtrl: ToastController, private db: AngularFireDatabase, private user: UserService,
+              private emailComposer: EmailComposer) {
   	this.item= this.navParams.get('item');
 
     this._orderRef = this.db.list('/order');
-    // this._orders = this._orderRef.snapshotChanges().map(changes => {
-    //   return changes.map(c => ({ key: c.payload.key, ...c.payload.val() }));
-    // });
 
     this.db.list('/order',
       ref => ref.orderByChild(`borrower_id`).equalTo(user.getCurrentUser().user_id))
@@ -219,7 +203,7 @@ export class ItemDetailPage {
   }
 
   contactLender(){
-    this.presentToast(`This function is still under development.`);
+    this.emailComposer.open({to: this.item.email, isHtml: true});
   }
 
   private presentToast(text) {
