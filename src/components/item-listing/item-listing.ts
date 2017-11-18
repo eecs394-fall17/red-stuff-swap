@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, App } from 'ionic-angular';
 import { AngularFireList, AngularFireDatabase } from "angularfire2/database";
 
 /**
@@ -18,18 +18,19 @@ export class ItemListingComponent {
 
   private _itemsRef: AngularFireList<any>;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private db:AngularFireDatabase) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private db:AngularFireDatabase,
+              private app: App) {
     this._itemsRef = this.db.list('/item');
   }
 
   showItemDetails() {
-    this.navCtrl.push("ItemDetailPage", {
+    this.app.getRootNav().push("ItemDetailPage", {
       item: this.data,
     });
   }
 
   openEditDialog(){
-    this.navCtrl.push("EditItemPage", {
+    this.app.getRootNav().push("EditItemPage", {
       data: this.data,
     });
   }
