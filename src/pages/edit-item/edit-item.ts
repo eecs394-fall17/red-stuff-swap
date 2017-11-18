@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import {
-  ActionSheetController, IonicPage, LoadingController, NavController, NavParams, Platform, ToastController
+  ActionSheetController, IonicPage, LoadingController, NavController, NavParams, ToastController
 } from 'ionic-angular';
 import {AngularFireDatabase, AngularFireList} from "angularfire2/database";
 import {Camera} from "@ionic-native/camera";
@@ -37,7 +37,7 @@ export class EditItemPage {
     private actionSheetCtrl: ActionSheetController,
     private toastCtrl: ToastController,
     private loadingCtrl: LoadingController,
-    private formBuilder: FormBuilder) {
+    formBuilder: FormBuilder) {
 
     this.data = this.navParams.get('data');
     this._itemRef = this.db.list('/item');

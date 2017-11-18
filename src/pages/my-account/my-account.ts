@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import {IonicPage, NavController, NavParams, ToastController} from 'ionic-angular';
-import {UserService} from "../../providers/user-service/user-service";
+import { IonicPage, NavController, NavParams, ToastController, Platform, App } from 'ionic-angular';
+import { UserService } from "../../providers/user-service/user-service";
 
 /**
  * Generated class for the MyAccountPage page.
@@ -18,38 +18,53 @@ export class MyAccountPage {
   users: any;
   isUserInfoEditorVisible: boolean = false;
 
-	myItemsRoot = "MyItemsPage";
-	activityRoot = "ActivityPage";
-	activityNumber = 5;
+  myItemsRoot = "MyItemsPage";
+  activityRoot = "ActivityPage";
+  activityNumber = 5;
+
+  private unregisterBackAction: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private user: UserService,
-              private toastCtrl: ToastController) {
+    private toastCtrl: ToastController, platform: Platform, app: App) {
+    platform.ready().then(() => {
+      if (platform.is(`android`)) {
+        this.unregisterBackAction = platform.registerBackButtonAction(() => {
+          this.goToItemList();
+        })
+      }
+    });
   }
 
-  ngOnInit(){
+  ionViewWillLeave() {
+    // Unregister the custom back button action for this page
+    this.unregisterBackAction && this.unregisterBackAction();
+  }
+
+  ngOnInit() {
     this.users = this.user.getUsers();
   }
 
-  goToItemList(){
-  	this.navCtrl.pop({animate: true, direction: 'forward'});
+  goToItemList() {
+    this.navCtrl.pop({ animate: true, direction: 'forward' });
   }
 
-  getActivityNumber(){
-  	return this.activityNumber;
+  getActivityNumber() {
+    return this.activityNumber;
   }
 
-  switchUser(){
-    if(!this.isUserInfoEditorVisible){
+  switchUser() {
+    if (!this.isUserInfoEditorVisible) {
       this.user.switchUser();
       this.presentToast(`Current user is: ${this.user.getCurrentUser().user_name}`);
     }
   }
 
-  switchUserEditor(){
+  switchUserEditor() {
+    this.presentToast(`event triggered`);
     this.isUserInfoEditorVisible = true;
   }
 
-  applyUserInfo(){
+  applyUserInfo() {
     this.user.changeUserInfo(this.users);
     this.isUserInfoEditorVisible = false;
     this.presentToast(`Current user is: ${this.user.getCurrentUser().user_name}`);

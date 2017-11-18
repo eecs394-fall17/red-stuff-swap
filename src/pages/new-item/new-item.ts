@@ -1,7 +1,6 @@
 import {Component} from '@angular/core';
 import {
-  ActionSheetController, IonicPage, LoadingController, NavController, Platform,
-  ToastController
+  ActionSheetController, IonicPage, LoadingController, NavController, ToastController
 } from 'ionic-angular';
 import {AngularFireDatabase, AngularFireList} from "angularfire2/database";
 import {Camera} from "@ionic-native/camera";
@@ -29,15 +28,11 @@ export class NewItemPage {
   developerMode = false;
 
   private authForm: FormGroup;
-  private itemName: string = "";
-  private itemDescription: string = "";
-  private lendTime: number = 7;
   private itemImgUrl: string = "";
-  private credit: number = 10;
 
   constructor(private db: AngularFireDatabase, private navCtrl: NavController, private camera: Camera,
               private actionSheetCtrl: ActionSheetController, private toastCtrl: ToastController,
-              private loadingCtrl: LoadingController, private formBuilder: FormBuilder,
+              private loadingCtrl: LoadingController, formBuilder: FormBuilder,
               private user: UserService) {
     this._itemRef = this.db.list('/item');
 

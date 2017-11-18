@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {IonicPage, ModalController, NavController, NavParams, ToastController} from 'ionic-angular';
+import {IonicPage, ModalController, NavController, NavParams} from 'ionic-angular';
 import {CalendarModal, CalendarModalOptions, DayConfig} from "ion2-calendar";
 import {AngularFireDatabase, AngularFireList} from "angularfire2/database";
 import {UserService} from "../../providers/user-service/user-service";
@@ -39,8 +39,7 @@ export class ItemDetailPage {
   private toTime: string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private modalCtrl: ModalController,
-              private toastCtrl: ToastController, private db: AngularFireDatabase, private user: UserService,
-              private emailComposer: EmailComposer) {
+              private db: AngularFireDatabase, private user: UserService, private emailComposer: EmailComposer) {
   	this.item= this.navParams.get('item');
 
     this._orderRef = this.db.list('/order');
@@ -208,14 +207,4 @@ export class ItemDetailPage {
   contactLender(){
     this.emailComposer.open({to: this.item.email, isHtml: true});
   }
-
-  private presentToast(text) {
-    let toast = this.toastCtrl.create({
-      message: text,
-      duration: 3000,
-      position: 'top'
-    });
-    toast.present();
-  }
-
 }

@@ -11,8 +11,6 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import {EmailComposer} from "@ionic-native/email-composer";
 import {File} from "@ionic-native/file";
-import {Transfer} from "@ionic-native/transfer";
-import {FilePath} from "@ionic-native/file-path";
 import {Camera} from "@ionic-native/camera";
 import { CalendarModule } from "ion2-calendar";
 import { UserService } from '../providers/user-service/user-service';
@@ -43,8 +41,6 @@ import {MomentModule} from "angular2-moment";
     AngularFireDatabase,
     EmailComposer,
     File,
-    Transfer,
-    FilePath,
     Camera,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     UserService
