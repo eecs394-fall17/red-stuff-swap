@@ -1,0 +1,51 @@
+activity-item {
+  ion-item {
+    ion-thumbnail{
+      width: 6rem !important;
+      height: 6rem !important;
+      padding: 8px 8px 8px 8px !important;
+      margin: 0 0 0 8px !important;
+      background-color: white;
+      img{
+        min-height: 100% !important;
+        width: auto !important;
+        border-radius: 4px;
+        display:block;
+        margin-left:auto;
+        margin-right:auto;
+      }
+    }
+    &.item-ios{
+      padding: 0;
+    }
+    &.item-md{
+      padding: 0;
+    }
+    .item-inner {
+      padding-left: 12px;
+      background-color: map-get($colors, white);
+      h2{
+        font-weight: bold;
+        font-size: 1.5rem;
+      }
+      p{
+        font-size: 1.2rem;
+      }
+      .description{
+        // min-height: 3rem;
+        max-height: 4rem;
+      }
+      button {
+        &.button-round-md {
+          padding: 0 1.1rem;
+        }
+        &.button-round-ios {
+          padding: 0 1.1rem;
+        }
+        span {
+          font-size: 1rem;
+        }
+      }
+    }
+  }
+}
