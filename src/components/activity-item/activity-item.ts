@@ -27,7 +27,19 @@ export class ActivityItemComponent {
     const to = new Date(this.data.order.end_time);
     this.startDate = `${from.getMonth() + 1}/${from.getDate()}/${from.getFullYear()}`;
     this.endDate = `${to.getMonth() + 1}/${to.getDate()}/${to.getFullYear()}`;
-    console.log(this.data.item.email);
+  }
+
+  reserve(event){
+    event.stopPropagation();
+  }
+
+  markAsRead(){
+    console.log("Mark as read!");
+  }
+
+  private performAction(orderId, status){
+    // write your code here
+    console.log(`should change order status to: ${status}`);
   }
 
 }
