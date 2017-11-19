@@ -21,10 +21,10 @@
   <p>{{data.borrower.user_email}}</p>
 
   <div item-end class="action-buttons">
-    <button ion-button small round (click)="reserve($event); performAction(data.order.key, 'request_confirmed')">
+    <button ion-button small round (click)="reserve($event); performAction(data.order.key, 'request_confirmed');">
       Accept
     </button>
-    <button ion-button small round (click)="reserve($event); performAction(data.order.key, 'request_denied')">
+    <button ion-button small round (click)="reserve($event); performAction(data.order.key, 'request_denied');">
       Deny
     </button>
   </div>

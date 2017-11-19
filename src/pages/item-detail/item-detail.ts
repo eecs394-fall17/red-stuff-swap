@@ -125,6 +125,7 @@ export class ItemDetailPage {
   }
 
   requestItem(){
+    console.log(this.buttonDisabled);
     if(this.buttonDisabled) return;
 
     let fTime = new Date(this.fromTime);
@@ -190,9 +191,12 @@ export class ItemDetailPage {
         return;
       }
     }
-    this.buttonDisabled = false;
     this.datePickerHint = ``;
     this.checkTime(from, to);
+    this.buttonDisabled = false;
+    if(this.requested){
+      this.buttonDisabled = true;
+    }
   }
 
   checkTime(from, to){
