@@ -1,6 +1,8 @@
 import { Component, Input } from '@angular/core';
 import { NavController, NavParams } from "ionic-angular";
-
+import { UserService } from "../../providers/user-service/user-service";
+import { AngularFireDatabase, AngularFireList } from "angularfire2/database";
+import { Observable } from "rxjs/Observable";
 /**
  * Generated class for the ActivityItemComponent component.
  *
@@ -17,9 +19,12 @@ export class ActivityItemComponent {
 
   startDate : String;
   endDate: String;
+  _ordersRef: AngularFireList<any>;
+  currentUserID: string;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
-
+  constructor(public navCtrl: NavController, public navParams: NavParams, private db:AngularFireDatabase, private user: UserService) {
+    this._ordersRef = this.db.list('/order');
+    //this.currentUserID = user.getCurrentUser().user_id;
   }
 
   ngOnInit(){
@@ -37,9 +42,12 @@ export class ActivityItemComponent {
     console.log("Mark as read!");
   }
 
-  private performAction(orderId, status){
-    // write your code here
-    console.log(`should change order status to: ${status}`);
+  private performAction(orderId, Status){
+    this._ordersRef.update(orderId, {
+      status: Status
+    })
+    console.log();
+    console.log(`should change order status to: ${Status}`);
   }
 
 }
