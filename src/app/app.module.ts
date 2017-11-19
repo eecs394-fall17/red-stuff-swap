@@ -16,6 +16,7 @@ import { CalendarModule } from "ion2-calendar";
 import { UserService } from '../providers/user-service/user-service';
 import {LongPressModule} from "ionic-long-press";
 import {MomentModule} from "angular2-moment";
+import { OrderService } from '../providers/order-service/order-service';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import {MomentModule} from "angular2-moment";
     File,
     Camera,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    UserService
+    UserService,
+    OrderService
   ]
 })
 export class AppModule {}
