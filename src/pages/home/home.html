@@ -7,7 +7,8 @@
 </ion-header>
 
 <ion-content>
+	<ion-searchbar (ionInput)="getItems($event)"></ion-searchbar>
   <ion-list>
-    <item-listing *ngFor="let item of _items | async" [data]=item></item-listing>
+    <item-listing *ngFor="let item of filteredItems" [data]=item></item-listing>
   </ion-list>
 </ion-content>
