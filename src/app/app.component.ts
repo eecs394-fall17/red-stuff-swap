@@ -18,12 +18,4 @@ export class MyApp {
       splashScreen.hide();
     });
   }
-
-  addNewItem(){
-    this.app.getRootNav().push("NewItemPage");
-  }
-
-  showProfile(){
-    this.app.getRootNav().push("MyAccountPage", {},{animate: true, direction: 'back'});
-  }
 }

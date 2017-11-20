@@ -1,0 +1,30 @@
+app-bar {
+  height: 80px;
+  .app-header {
+    ion-toolbar{
+      height: 80px;
+
+      .toolbar-background{
+        background: #f8f8f8;
+        border-color: rgba(0, 0, 0, 0.3) !important;
+        border-width: 0 0 0.55px !important;
+        border-style: solid;
+      }
+
+      .toolbar-content{
+        text-align: center;
+        img {
+          padding: 8px;
+          width: 76px;
+          height: 76px;
+        }
+      }
+
+      button {
+        color: black;
+        font-size: 2rem;
+        margin: 0 10px !important;
+      }
+    }
+  }
+}
