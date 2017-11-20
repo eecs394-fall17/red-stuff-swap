@@ -24,6 +24,14 @@ app-bar {
         color: black;
         font-size: 2rem;
         margin: 0 10px !important;
+        ion-badge{
+          background-color: red;
+          position: absolute;
+          top: -6px;
+          right: -12px;
+          font-size: 1.1rem;
+          padding: 3px 6px;
+        }
       }
     }
   }

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { App } from "ionic-angular";
+import { OrderService } from "../../providers/order-service/order-service";
 
 /**
  * Generated class for the AppBarComponent component.
@@ -13,7 +14,15 @@ import { App } from "ionic-angular";
 })
 export class AppBarComponent {
 
-  constructor(private app: App) {
+  private newMsg;
+
+  constructor(private app: App, private orderServ: OrderService) {
+  }
+
+  ngOnInit(){
+    this.orderServ.newMsgNum$.subscribe(num => {
+      this.newMsg = num;
+    })
   }
 
   addNewItem(){

@@ -19,8 +19,10 @@ export class OrderService {
   private _orders: Observable<any[]>;
 
   private _requestSource = new BehaviorSubject<any>(null);
-
   requests$ = this._requestSource.asObservable();
+
+  private _newMsgSource = new BehaviorSubject<any>(null);
+  newMsgNum$ = this._newMsgSource.asObservable();
 
   constructor(private db:AngularFireDatabase, private user: UserService) {
     this._ordersRef = this.db.list('/order');
@@ -37,6 +39,7 @@ export class OrderService {
     this._items.subscribe(items => {
       this._orders.subscribe( orders => {
         let requests = [];
+        let newMsgs = 0;
 
         orders.forEach( order => {
           for(let i = 0; i < items.length; i++){
@@ -48,6 +51,9 @@ export class OrderService {
                 borrower: user.getUserById(order.borrower_id),
                 identity: 'borrower',
               });
+              if(!order.borrower_has_read){
+                newMsgs += 1;
+              }
             }
 
             if(item.key == order.item_id && user.getCurrentUser().user_id == order.lender_id){
@@ -57,11 +63,15 @@ export class OrderService {
                 borrower: user.getUserById(order.borrower_id),
                 identity: 'lender'
               });
+              if(!order.lender_has_read){
+                newMsgs += 1;
+              }
             }
           }
         });
 
         this._requestSource.next(requests);
+        this._newMsgSource.next(newMsgs);
       });
     });
   }
