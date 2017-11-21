@@ -26,8 +26,8 @@ export class HomePage {
       return changes.map(c => ({ key: c.payload.key, ...c.payload.val() }));
     }).subscribe(dataArray => {
       console.log(dataArray);
-      this.filteredItems = dataArray;
-      // this.initializeItems();
+      this.fullItemList = dataArray;
+      this.initializeItems();
     });
   }
 
