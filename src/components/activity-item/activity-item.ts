@@ -20,7 +20,7 @@ export class ActivityItemComponent {
   startDate : String;
   endDate: String;
   _ordersRef: AngularFireList<any>;
-  currentUserID: string;
+  //currentUserID: string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private db:AngularFireDatabase, private user: UserService) {
     this._ordersRef = this.db.list('/order');
@@ -39,13 +39,38 @@ export class ActivityItemComponent {
   }
 
   markAsRead(){
-    console.log("Mark as read!");
+    if(this.data.identity == 'lender') {
+      if(!this.data.order.lender_has_read)
+      this._ordersRef.update(this.data.order.key, {
+        lender_has_read: true,
+      })
+    }
+    else if(this.data.identity == 'borrower') {
+      if(!this.data.order.borrower_has_read)
+      this._ordersRef.update(this.data.order.key, {
+        borrower_has_read: true,
+      })
+    }
+    console.log(this.data.order.key);
+    //console.log("Mark as read!");
   }
 
+
   private performAction(orderId, Status){
-    this._ordersRef.update(orderId, {
-      status: Status
-    })
+    if(this.data.identity == 'lender') {
+      this._ordersRef.update(orderId, {
+        status: Status,
+        lender_has_read: true,
+        borrower_has_read: false
+      })
+    }
+    else if(this.data.identity == 'borrower') {
+      this._ordersRef.update(orderId, {
+        status: Status,
+        lender_has_read: false,
+        borrower_has_read: true
+      })
+    }
     console.log();
     console.log(`should change order status to: ${Status}`);
   }

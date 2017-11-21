@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ToastController, Platform, App } from 'ionic-angular';
 import { UserService } from "../../providers/user-service/user-service";
+import { OrderService } from "../../providers/order-service/order-service";
 
 /**
  * Generated class for the MyAccountPage page.
@@ -20,11 +21,11 @@ export class MyAccountPage {
 
   myItemsRoot = "MyItemsPage";
   activityRoot = "ActivityPage";
-  activityNumber = 5;
+  activityNumber: number;
 
   private unregisterBackAction: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private user: UserService,
+  constructor(private orderServ: OrderService, public navCtrl: NavController, public navParams: NavParams, private user: UserService,
     private toastCtrl: ToastController, platform: Platform, app: App) {
     platform.ready().then(() => {
       if (platform.is(`android`)) {
@@ -42,6 +43,9 @@ export class MyAccountPage {
 
   ngOnInit() {
     this.users = this.user.getUsers();
+    this.orderServ.newMsgNum$.subscribe(num => {
+      this.activityNumber = num;
+    })
   }
 
   goToItemList() {
