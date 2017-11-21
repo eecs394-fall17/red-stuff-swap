@@ -1,8 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { NavController, NavParams } from "ionic-angular";
-import { UserService } from "../../providers/user-service/user-service";
 import { AngularFireDatabase, AngularFireList } from "angularfire2/database";
-import { Observable } from "rxjs/Observable";
 /**
  * Generated class for the ActivityItemComponent component.
  *
@@ -22,7 +20,7 @@ export class ActivityItemComponent {
   _ordersRef: AngularFireList<any>;
   //currentUserID: string;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private db:AngularFireDatabase, private user: UserService) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private db:AngularFireDatabase) {
     this._ordersRef = this.db.list('/order');
     //this.currentUserID = user.getCurrentUser().user_id;
   }
@@ -56,7 +54,7 @@ export class ActivityItemComponent {
   }
 
 
-  private performAction(orderId, Status){
+  performAction(orderId, Status){
     if(this.data.identity == 'lender') {
       this._ordersRef.update(orderId, {
         status: Status,

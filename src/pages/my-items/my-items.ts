@@ -16,8 +16,7 @@ export class MyItemsPage {
 	_itemsRef: AngularFireList<any>;
 	_items: Observable<any[]>
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private db:AngularFireDatabase,
-              private user: UserService) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private db:AngularFireDatabase, user: UserService) {
   	this._itemsRef = this.db.list('/item',
       ref => ref.orderByChild(`person_id`).equalTo(user.getCurrentUser().user_id));
     this._items = this._itemsRef.snapshotChanges().map(changes => {

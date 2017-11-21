@@ -24,7 +24,7 @@ export class OrderService {
   private _newMsgSource = new BehaviorSubject<any>(null);
   newMsgNum$ = this._newMsgSource.asObservable();
 
-  constructor(private db:AngularFireDatabase, private user: UserService) {
+  constructor(private db:AngularFireDatabase, user: UserService) {
     this._ordersRef = this.db.list('/order');
     this._orders = this._ordersRef.snapshotChanges().map(changes => {
       return changes.map(c => ({ key: c.payload.key, ...c.payload.val()}));
