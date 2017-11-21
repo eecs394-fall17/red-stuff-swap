@@ -142,7 +142,9 @@ export class ItemDetailPage {
       status: `requested`,
       start_time: from.valueOf(),
       end_time: to.valueOf(),
-      time_created: Date.now()
+      time_created: Date.now(),
+      borrower_has_read: false,
+      lender_has_read: false,
     }).then(()=>{
       this.requesting = false;
       this.requested = true;

@@ -40,11 +40,13 @@ export class ActivityItemComponent {
 
   markAsRead(){
     if(this.data.identity == 'lender') {
+      if(!this.data.order.lender_has_read)
       this._ordersRef.update(this.data.order.key, {
         lender_has_read: true,
       })
     }
     else if(this.data.identity == 'borrower') {
+      if(!this.data.order.borrower_has_read)
       this._ordersRef.update(this.data.order.key, {
         borrower_has_read: true,
       })
