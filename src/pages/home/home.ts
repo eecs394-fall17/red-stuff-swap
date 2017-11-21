@@ -19,12 +19,15 @@ export class HomePage {
 
   constructor(private db:AngularFireDatabase) {
     this._itemsRef = this.db.list('/item');
-    this._items = this._itemsRef.snapshotChanges().map(changes => {
+  }
+
+  ngOnInit(){
+    this._itemsRef.snapshotChanges().map(changes => {
       return changes.map(c => ({ key: c.payload.key, ...c.payload.val() }));
-    });
-    this._itemsRef.valueChanges().subscribe(dataArray => {
-      this.fullItemList = dataArray;
-      this.initializeItems();
+    }).subscribe(dataArray => {
+      console.log(dataArray);
+      this.filteredItems = dataArray;
+      // this.initializeItems();
     });
   }
 
