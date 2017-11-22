@@ -30,7 +30,7 @@
   </p>
   <p>{{item.description}}</p>
 
-  <div class="date-time">
+  <div class="date-time" *ngIf="!isOwner">
     <h5 *ngIf="datePickerHint != ''">{{datePickerHint}}</h5>
     <p>
       <span class="label">From</span>
@@ -48,8 +48,11 @@
     </p>
   </div>
 
-  <button ion-button block class="request-to-borrow" [outline]="requested || requesting || buttonDisabled" [ngClass]="{'requested':requested, 'requesting': !requested && buttonDisabled ||requesting }" (click)="requestItem()">
-    {{requesting? "Requesting" : requested? "Request Sent!":"Request To Borrow"}}
+  <button ion-button block class="request-to-borrow"
+          [outline]="requested || requesting || buttonDisabled || isOwner"
+          [ngClass]="{'requested':requested && !isOwner, 'requesting': isOwner || !requested && buttonDisabled ||requesting }"
+          (click)="requestItem()">
+    {{isOwner? "Owner Of This Item" : requesting? "Requesting" : requested? "Request Sent!":"Request To Borrow"}}
   </button>
 
   <h3>Lender</h3>
@@ -62,7 +65,7 @@
     <!--<p>Kellaner</p>-->
     <!--<p>Chicago, IL</p>-->
     <p>{{item.email}}</p>
-    <h5>
+    <h5 *ngIf="isOwner">
       <ion-icon name="ios-mail-outline"></ion-icon>
       contact lender
     </h5>

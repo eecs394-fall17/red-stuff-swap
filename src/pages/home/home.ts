@@ -13,7 +13,6 @@ import 'rxjs/add/operator/map';
 export class HomePage {
 
   _itemsRef: AngularFireList<any>;
-  _items: Observable<any[]>;
   fullItemList: Array<any>;
   filteredItems: Array<any>;
 
@@ -25,7 +24,6 @@ export class HomePage {
     this._itemsRef.snapshotChanges().map(changes => {
       return changes.map(c => ({ key: c.payload.key, ...c.payload.val() }));
     }).subscribe(dataArray => {
-      console.log(dataArray);
       this.fullItemList = dataArray;
       this.initializeItems();
     });
