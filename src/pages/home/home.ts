@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import {IonicPage} from "ionic-angular";
 
 import { AngularFireDatabase, AngularFireList } from 'angularfire2/database';
-import { Observable } from "rxjs/Observable";
 import 'rxjs/add/operator/map';
 
 @IonicPage()
@@ -13,7 +12,6 @@ import 'rxjs/add/operator/map';
 export class HomePage {
 
   _itemsRef: AngularFireList<any>;
-  _items: Observable<any[]>;
   fullItemList: Array<any>;
   filteredItems: Array<any>;
 
@@ -25,7 +23,6 @@ export class HomePage {
     this._itemsRef.snapshotChanges().map(changes => {
       return changes.map(c => ({ key: c.payload.key, ...c.payload.val() }));
     }).subscribe(dataArray => {
-      console.log(dataArray);
       this.fullItemList = dataArray;
       this.initializeItems();
     });

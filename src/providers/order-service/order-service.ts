@@ -24,7 +24,7 @@ export class OrderService {
   private _newMsgSource = new BehaviorSubject<any>(null);
   newMsgNum$ = this._newMsgSource.asObservable();
 
-  constructor(private db:AngularFireDatabase, user: UserService) {
+  constructor(private db:AngularFireDatabase,user: UserService) {
     this._ordersRef = this.db.list('/order');
     this._orders = this._ordersRef.snapshotChanges().map(changes => {
       return changes.map(c => ({ key: c.payload.key, ...c.payload.val()}));
@@ -34,44 +34,44 @@ export class OrderService {
     this._items = this._itemsRef.snapshotChanges().map(changes => {
       return changes.map(c => ({ key: c.payload.key, ...c.payload.val() }));
     });
+    user.currentUser.subscribe(u => {
+      this._items.subscribe(items => {
+        this._orders.subscribe( orders => {
+          let requests = [];
+          let newMsgs = 0;
 
+          orders.forEach( order => {
+            for(let i = 0; i < items.length; i++){
+              const item = items[i];
+              if(item.key == order.item_id && u.user_id == order.borrower_id){
+                requests.push({
+                  item: item,
+                  order: order,
+                  borrower: user.getUserById(order.borrower_id),
+                  identity: 'borrower',
+                });
+                if(!order.borrower_has_read){
+                  newMsgs += 1;
+                }
+              }
 
-    this._items.subscribe(items => {
-      this._orders.subscribe( orders => {
-        let requests = [];
-        let newMsgs = 0;
-
-        orders.forEach( order => {
-          for(let i = 0; i < items.length; i++){
-            const item = items[i];
-            if(item.key == order.item_id && user.getCurrentUser().user_id == order.borrower_id){
-              requests.push({
-                item: item,
-                order: order,
-                borrower: user.getUserById(order.borrower_id),
-                identity: 'borrower',
-              });
-              if(!order.borrower_has_read){
-                newMsgs += 1;
+              if(item.key == order.item_id && u.user_id == order.lender_id){
+                requests.push({
+                  item: item,
+                  order: order,
+                  borrower: user.getUserById(order.borrower_id),
+                  identity: 'lender'
+                });
+                if(!order.lender_has_read){
+                  newMsgs += 1;
+                }
               }
             }
+          });
 
-            if(item.key == order.item_id && user.getCurrentUser().user_id == order.lender_id){
-              requests.push({
-                item: item,
-                order: order,
-                borrower: user.getUserById(order.borrower_id),
-                identity: 'lender'
-              });
-              if(!order.lender_has_read){
-                newMsgs += 1;
-              }
-            }
-          }
+          this._requestSource.next(requests);
+          this._newMsgSource.next(newMsgs);
         });
-
-        this._requestSource.next(requests);
-        this._newMsgSource.next(newMsgs);
       });
     });
   }

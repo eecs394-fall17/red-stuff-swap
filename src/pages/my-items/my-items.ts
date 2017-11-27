@@ -14,14 +14,19 @@ import { UserService } from "../../providers/user-service/user-service";
 export class MyItemsPage {
 
 	_itemsRef: AngularFireList<any>;
-	_items: Observable<any[]>
+	_items: Observable<any[]>;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private db:AngularFireDatabase, user: UserService) {
-  	this._itemsRef = this.db.list('/item',
-      ref => ref.orderByChild(`person_id`).equalTo(user.getCurrentUser().user_id));
-    this._items = this._itemsRef.snapshotChanges().map(changes => {
-      return changes.map(c => ({ key: c.payload.key, ...c.payload.val() }));
-    });
+  constructor(public navCtrl: NavController, public navParams: NavParams, private db:AngularFireDatabase,private user: UserService) {
+  }
+
+  ngOnInit(){
+    this.user.currentUser.subscribe(user => {
+    	this._itemsRef = this.db.list('/item',
+        ref => ref.orderByChild(`person_id`).equalTo(user.user_id));
+      this._items = this._itemsRef.snapshotChanges().map(changes => {
+        return changes.map(c => ({ key: c.payload.key, ...c.payload.val() }));
+      });
+    })
   }
 
 }

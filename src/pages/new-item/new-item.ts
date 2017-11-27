@@ -26,23 +26,28 @@ export class NewItemPage {
   private _loader: any;
 
   developerMode = false;
+  currentUser: any;
 
   private authForm: FormGroup;
   private itemImgUrl: string = "";
 
   constructor(private db: AngularFireDatabase, private navCtrl: NavController, private camera: Camera,
               private actionSheetCtrl: ActionSheetController, private toastCtrl: ToastController,
-              private loadingCtrl: LoadingController, formBuilder: FormBuilder,
+              private loadingCtrl: LoadingController, private formBuilder: FormBuilder,
               private user: UserService) {
     this._itemRef = this.db.list('/item');
+  }
 
-    this.authForm = formBuilder.group({
-      itemName: ['', Validators.compose([Validators.required, Validators.maxLength(40)])],
-      itemDescription: ['', Validators.compose([Validators.required, Validators.maxLength(200)])],
-      lendTime: ['7', Validators.compose([Validators.required])],
-      personName: [user.getCurrentUser().user_name],
-      personEmail: [user.getCurrentUser().user_email]
-    });
+  ngOnInit(){
+    this.user.currentUser.subscribe(user => {
+      this.authForm = this.formBuilder.group({
+        itemName: ['', Validators.compose([Validators.required, Validators.maxLength(40)])],
+        itemDescription: ['', Validators.compose([Validators.required, Validators.maxLength(200)])],
+        lendTime: ['7', Validators.compose([Validators.required])],
+        personName: [user.user_name],
+        personEmail: [user.user_email]
+      });
+    })
   }
 
   addItem(value) {
@@ -60,7 +65,7 @@ export class NewItemPage {
       // todo change these after user system is done
       email: value.personEmail,
       person_name: value.personName,
-      person_id: this.user.getCurrentUser().user_id,
+      person_id: this.currentUser.user_id,
       // todo this should not be here
       radius: 2
     });

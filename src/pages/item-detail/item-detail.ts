@@ -26,6 +26,8 @@ export class ItemDetailPage {
   requesting = false;
   buttonDisabled = false;
   datePickerHint = `Pick up dates of borrow and return first`;
+  isOwner = false;
+  currentUser:any;
 
   private _orderRef: AngularFireList<any>;
   private _disabledDates: DayConfig[] = [];
@@ -41,34 +43,7 @@ export class ItemDetailPage {
   constructor(public navCtrl: NavController, public navParams: NavParams, private modalCtrl: ModalController,
               private db: AngularFireDatabase, private user: UserService, private emailComposer: EmailComposer) {
   	this.item= this.navParams.get('item');
-
     this._orderRef = this.db.list('/order');
-
-    this.db.list('/order',
-      ref => ref.orderByChild(`borrower_id`).equalTo(user.getCurrentUser().user_id))
-      .snapshotChanges().map(changes => {
-      return changes.map(c => ({ key: c.payload.key, ...c.payload.val()}));
-    }).subscribe(orders => {
-      const now = Date.now();
-      for (let i = 0; i < orders.length; i++){
-        let order = orders[i];
-        if (order.start_time > now && order.status == `requested`){
-          this.requested = true;
-          const from = new Date(order.start_time);
-          const to = new Date(order.end_time);
-
-          this.fromTime = new Date(from.valueOf() - from.getTimezoneOffset() * 60000).toISOString();
-          this.toTime = new Date(to.valueOf() - from.getTimezoneOffset() * 60000).toISOString();
-          this.fromDate = `${from.getMonth() + 1}/${from.getDate()}/${from.getFullYear()}`;
-          this.fromDateRaw = new Date(this.fromDate);
-          this.toDate = `${to.getMonth() + 1}/${to.getDate()}/${to.getFullYear()}`;
-          this.toDateRaw = new Date(this.toDate);
-          this.buttonDisabled = true;
-          this._canSelectDate = false;
-          break;
-        }
-      }
-    });
 
     this.db.list( `/order`,
       ref => ref.orderByChild(`item_id`).equalTo(this.item.key))
@@ -79,7 +54,7 @@ export class ItemDetailPage {
       this._disabledDates = [];
       const dayLength = 1000 * 60 * 60 * 24;
       orders.forEach(order => {
-        if(order.status != `requested` && order.end_time > Date.now()){
+        if(order.status != `requested` && order.status != `request_denied` && order.end_time > Date.now()){
           const from = new Date(order.start_time);
           const to = new Date(order.end_time);
 
@@ -122,11 +97,41 @@ export class ItemDetailPage {
     this.fromDateRaw = new Date(this.fromDate);
     this.toDate = `${timer.getMonth() + 1}/${timer.getDate()}/${timer.getFullYear()}`;
     this.toDateRaw = new Date(this.toDate);
+
+    this.user.currentUser.subscribe(user => {
+      this.isOwner = user.user_id == this.item.person_id;
+      this.currentUser = user;
+
+      this.db.list('/order',
+        ref => ref.orderByChild(`borrower_id`).equalTo(user.user_id))
+        .snapshotChanges().map(changes => {
+        return changes.map(c => ({ key: c.payload.key, ...c.payload.val()}));
+      }).subscribe(orders => {
+        const now = Date.now();
+        for (let i = 0; i < orders.length; i++){
+          let order = orders[i];
+          if (order.start_time > now && order.status == `requested`){
+            this.requested = true;
+            const from = new Date(order.start_time);
+            const to = new Date(order.end_time);
+
+            this.fromTime = new Date(from.valueOf() - from.getTimezoneOffset() * 60000).toISOString();
+            this.toTime = new Date(to.valueOf() - from.getTimezoneOffset() * 60000).toISOString();
+            this.fromDate = `${from.getMonth() + 1}/${from.getDate()}/${from.getFullYear()}`;
+            this.fromDateRaw = new Date(this.fromDate);
+            this.toDate = `${to.getMonth() + 1}/${to.getDate()}/${to.getFullYear()}`;
+            this.toDateRaw = new Date(this.toDate);
+            this.buttonDisabled = true;
+            this._canSelectDate = false;
+            break;
+          }
+        }
+      });
+    });
   }
 
   requestItem(){
-    console.log(this.buttonDisabled);
-    if(this.buttonDisabled) return;
+    if(this.buttonDisabled || this.isOwner) return;
 
     let fTime = new Date(this.fromTime);
     let tTime = new Date(this.toTime);
@@ -136,7 +141,7 @@ export class ItemDetailPage {
       `MM/DD/YYYY HH:mm`);
     this.requesting = true;
     this._orderRef.push({
-      borrower_id: this.user.getCurrentUser().user_id,
+      borrower_id: this.currentUser.user_id,
       lender_id: this.item.person_id,
       item_id: this.item.key,
       status: `requested`,
@@ -211,6 +216,7 @@ export class ItemDetailPage {
   }
 
   contactLender(){
+    if(this.isOwner) return;
     this.emailComposer.open({to: this.item.email, isHtml: true});
   }
 }
