@@ -1,0 +1,46 @@
+lender-info {
+	.scroll-content{
+		padding: 16px 32px !important;
+	}
+	#lender-details{
+		text-align: left;
+		h4 {
+			font-size: 1.2em;
+			font-weight: bold;
+			margin-bottom: 0em;
+		}
+		p{
+			margin: 0em !important;
+		}
+		ion-icon {
+			font-size: 1.5em;
+		}
+		#stars{
+			ion-icon{
+				color: orange;
+			}
+		}
+		/*#contact{*/
+			vertical-align: top !important;
+			margin-top: 0.1em;
+			ion-icon{
+				font-weight: bold;
+			}
+			button{
+				background-color: white;
+				border: 1px solid black;
+				padding: 0.2em 1em;
+				font-size:1em;
+				vertical-align: middle;
+			}
+		/*}*/
+	}
+	#verified{
+		height: 100%;
+		display: block;
+		vertical-align: middle;
+		font-size: medium;
+		font-weight: bold;
+		color: green;
+	}
+}

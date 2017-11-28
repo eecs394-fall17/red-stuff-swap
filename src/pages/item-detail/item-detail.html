@@ -56,19 +56,7 @@
   </button>
 
   <h3>Lender</h3>
-  <button ion-item detail-none no-lines class="lender-info" (click)="contactLender()">
-    <ion-avatar item-start>
-      <img src="assets/imgs/logo.png"/>
-    </ion-avatar>
-    <h4>{{item.person_name}}</h4>
-    <!-- We don't have info like this right now, skipping -->
-    <!--<p>Kellaner</p>-->
-    <!--<p>Chicago, IL</p>-->
-    <p>{{item.email}}</p>
-    <h5 *ngIf="isOwner">
-      <ion-icon name="ios-mail-outline"></ion-icon>
-      contact lender
-    </h5>
-  </button>
-
+  <lender-info [person_name]=item.person_name
+               [email]=item.email
+               [isOwner]=isOwner></lender-info>
 </ion-content>
