@@ -21,8 +21,8 @@ export class LenderInfoComponent {
 	user_rating: number = 4;
 	stars = ["star", "star", "star", "star", "star"];
 
-
   constructor(private emailComposer: EmailComposer) {
+
   	this.makeStars();
   }
 
@@ -48,4 +48,16 @@ export class LenderInfoComponent {
     if(this.isOwner) return;
     this.emailComposer.open({to: this.email, isHtml: true});
   }
+
+  getImgSrc(){
+  	switch (this.person_name) {
+  		case "Annie Curtis":
+  			return "assets/imgs/annie.png";
+  		case "Donnie River":
+  			return "assets/imgs/donnie.png";
+  		default:
+  			return "assets/imgs/logo.png";
+  	}
+  }
+
 }

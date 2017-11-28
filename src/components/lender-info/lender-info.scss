@@ -12,19 +12,17 @@ lender-info {
 		p{
 			margin: 0em !important;
 		}
-		ion-icon {
-			font-size: 1.5em;
-		}
 		#stars{
 			ion-icon{
 				color: orange;
 			}
 		}
-		/*#contact{*/
+		#contact{
 			vertical-align: top !important;
 			margin-top: 0.1em;
 			ion-icon{
 				font-weight: bold;
+				font-size: 1.5em;
 			}
 			button{
 				background-color: white;
@@ -33,7 +31,7 @@ lender-info {
 				font-size:1em;
 				vertical-align: middle;
 			}
-		/*}*/
+		}
 	}
 	#verified{
 		height: 100%;
