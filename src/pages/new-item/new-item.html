@@ -36,6 +36,12 @@
     <ion-item class="hint-text" *ngIf="authForm.controls.itemDescription.hasError('maxlength') && authForm.controls.itemDescription.touched">
       <p>Sorry, maximum description length is 200!</p>
     </ion-item>
+    <ion-item class="text-box" no-lines>
+      <ion-input type="text" placeholder="Item Location" formControlName="itemLocation"></ion-input>
+    </ion-item>
+    <ion-item class="hint-text" *ngIf="authForm.controls.itemLocation.hasError('maxlength') && authForm.controls.itemLocation.touched">
+      <p>Sorry, maximum item location length is 40!</p>
+    </ion-item>
     <ion-item no-lines>
       <ion-label stacked>Image</ion-label>
     </ion-item>

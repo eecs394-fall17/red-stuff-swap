@@ -42,6 +42,7 @@ export class NewItemPage {
     this.user.currentUser.subscribe(user => {
       this.authForm = this.formBuilder.group({
         itemName: ['', Validators.compose([Validators.required, Validators.maxLength(40)])],
+        itemLocation: ['', Validators.compose([Validators.required, Validators.maxLength(40)])],
         itemDescription: ['', Validators.compose([Validators.required, Validators.maxLength(200)])],
         lendTime: ['7', Validators.compose([Validators.required])],
         personName: [user.user_name],
@@ -56,6 +57,7 @@ export class NewItemPage {
       // todo wrong url
       image_url: this.itemImgUrl,
       name: value.itemName,
+      location: value.itemLocation,
       rating: 0,
       reviews_num: 0,
       status: "on_shell",
