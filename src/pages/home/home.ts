@@ -46,8 +46,12 @@ export class HomePage {
     }
 
     this.filteredItems = this.filteredItems.filter((v) => {
-      if(v.name && q) {
+      if((v.name && q) || (v.location && q)) {
         if (v.name.toLowerCase().indexOf(q.toLowerCase()) > -1 ||
+          v.description.toLowerCase().indexOf(q.toLowerCase()) > -1) {
+          return true;
+        }
+        if (v.location.toLowerCase().indexOf(q.toLowerCase()) > -1 ||
           v.description.toLowerCase().indexOf(q.toLowerCase()) > -1) {
           return true;
         }
