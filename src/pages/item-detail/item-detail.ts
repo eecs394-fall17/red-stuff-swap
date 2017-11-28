@@ -4,7 +4,6 @@ import {CalendarModal, CalendarModalOptions, DayConfig} from "ion2-calendar";
 import {AngularFireDatabase, AngularFireList} from "angularfire2/database";
 import {UserService} from "../../providers/user-service/user-service";
 import * as moment from 'moment';
-import {EmailComposer} from "@ionic-native/email-composer";
 /**
  * Generated class for the ItemDetailPage page.
  *
@@ -41,7 +40,7 @@ export class ItemDetailPage {
   private toTime: string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private modalCtrl: ModalController,
-              private db: AngularFireDatabase, private user: UserService, private emailComposer: EmailComposer) {
+              private db: AngularFireDatabase, private user: UserService) {
   	this.item= this.navParams.get('item');
     this._orderRef = this.db.list('/order');
 
@@ -213,10 +212,5 @@ export class ItemDetailPage {
         this.datePickerHint = `Borrow time is ahead of return time`;
       }
     }
-  }
-
-  contactLender(){
-    if(this.isOwner) return;
-    this.emailComposer.open({to: this.item.email, isHtml: true});
   }
 }

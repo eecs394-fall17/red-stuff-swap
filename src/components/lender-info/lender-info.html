@@ -1,0 +1,25 @@
+<ion-grid>
+	<ion-row>
+		<ion-col col-2>
+			<ion-avatar>
+				<img [src]="getImgSrc()"/>
+			</ion-avatar>
+		</ion-col>
+		<ion-col col-6 id="lender-details">
+				<h4>{{person_name}}</h4>
+				<span id="stars">
+	        <ion-icon *ngFor="let n of stars" [name]="n"></ion-icon>
+	        <span>(70)</span>
+    		</span>
+				<p>Chicago, IL</p>
+				<div *ngIf="!isOwner" id="contact">
+					<ion-icon name="ios-mail-outline"></ion-icon>
+					<button (click)="contactLender()">Contact Lender</button>
+				</div>
+		</ion-col>
+		<ion-col col-4 id="verified">
+			<ion-icon name="ios-checkmark-circle-outline"></ion-icon>
+			Verified
+		</ion-col>
+	</ion-row>
+</ion-grid>
