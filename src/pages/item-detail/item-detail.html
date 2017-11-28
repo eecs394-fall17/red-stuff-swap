@@ -4,7 +4,9 @@
   See http://ionicframework.com/docs/components/#navigation for more info on
   Ionic pages and navigation.
 -->
-<ion-header>
+<app-bar></app-bar>
+
+<ion-header class="with-app-bar">
   <ion-navbar>
     <ion-title>
       Item Details
@@ -13,7 +15,7 @@
 </ion-header>
 
 
-<ion-content padding>
+<ion-content padding class="with-app-bar">
   <img class="item-img" [src]="item.image_url">
 
   <h2>{{item.name}}</h2>
@@ -24,45 +26,39 @@
         <!--<ion-icon *ngFor="let n of stars" [name]="n"></ion-icon>-->
         <!--<span>{{item.rating}}</span>-->
     <!--</span>-->
-    {{item.person_name}} | {{item.radius}}mi <i>away</i>
+    {{item.location}} | {{item.radius}}mi <i>away</i>
+    <br>
+    {{item.person_name}}
   </p>
   <p>{{item.description}}</p>
 
-  <div class="date-time">
+  <div class="date-time" *ngIf="!isOwner">
+    <h5 *ngIf="datePickerHint != ''">{{datePickerHint}}</h5>
     <p>
       <span class="label">From</span>
-      <button ion-button color="dark" outline small (click)="openCalendar('from')">{{fromDate}}</button>
+      <button ion-button color="dark" outline small (click)="openCalendar()">{{fromDate}}</button>
       <button ion-button color="dark" outline small>
-        <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="fromTime"></ion-datetime>
+        <ion-datetime displayFormat="HH:mm" pickerFormat="HH mm" [(ngModel)]="fromTime" (ngModelChange)="checkDateRange()"></ion-datetime>
       </button>
     </p>
     <p>
       <span class="label">To</span>
-      <button ion-button color="dark" outline small (click)="openCalendar('to')">{{toDate}}</button>
+      <button ion-button color="dark" outline small (click)="openCalendar()">{{toDate}}</button>
       <button ion-button color="dark" outline small>
-        <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="toTime"></ion-datetime>
+        <ion-datetime displayFormat="HH:mm" pickerFormat="HH mm" [(ngModel)]="toTime" (ngModelChange)="checkDateRange()"></ion-datetime>
       </button>
     </p>
   </div>
 
-  <button ion-button block class="request-to-borrow" [outline]="requested" [ngClass]="{'requested':requested}" (click)="requestItem()">
-    {{requested? "Request Sent!":"Request To Borrow"}}
+  <button ion-button block class="request-to-borrow"
+          [outline]="requested || requesting || buttonDisabled || isOwner"
+          [ngClass]="{'requested':requested && !isOwner, 'requesting': isOwner || !requested && buttonDisabled ||requesting }"
+          (click)="requestItem()">
+    {{isOwner? "Owner Of This Item" : requesting? "Requesting" : requested? "Request Sent!":"Request To Borrow"}}
   </button>
 
   <h3>Lender</h3>
-  <button ion-item detail-none no-lines class="lender-info" (click)="contactLender()">
-    <ion-avatar item-start>
-      <img src="assets/imgs/logo.png"/>
-    </ion-avatar>
-    <h4>{{item.person_name}}</h4>
-    <!-- We don't have info like this right now, skipping -->
-    <!--<p>Kellaner</p>-->
-    <!--<p>Chicago, IL</p>-->
-    <p>{{item.email}}</p>
-    <h5>
-      <ion-icon name="ios-mail-outline"></ion-icon>
-      contact lender
-    </h5>
-  </button>
-
+  <lender-info [person_name]=item.person_name
+               [email]=item.email
+               [isOwner]=isOwner></lender-info>
 </ion-content>

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import 'rxjs/add/operator/map';
+import { BehaviorSubject } from "rxjs/BehaviorSubject";
 
 /*
  Generated class for the UserService provider.
@@ -14,18 +15,27 @@ export class UserService {
   private _userB = {user_id: 1, user_name: 'Annie Curtis', user_email: 'acurtis@user.mail.com'};
   private _currentUser: any;
 
+  private _userSource = new BehaviorSubject<any>(null);
+  currentUser = this._userSource.asObservable();
+
   constructor() {
     this._currentUser = this._userA;
+    this._userSource.next(this._currentUser);
   }
 
   public switchUser(){
     this._currentUser = this._currentUser == this._userA ? this._userB:this._userA;
+    this._userSource.next(this._currentUser);
   }
 
   // everyone want to use a true email address to test with
   public changeUserInfo(data){
     this._userA = data.userA;
     this._userB = data.userB;
+  }
+
+  public refreshCurrentUser(){
+    this._userSource.next(this._currentUser);
   }
 
   public getCurrentUser(){

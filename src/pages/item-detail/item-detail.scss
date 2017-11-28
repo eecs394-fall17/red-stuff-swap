@@ -27,6 +27,11 @@ page-item-detail {
       .date-time{
         margin-top: 2em;
         margin-bottom: 2em;
+        h5{
+          margin: 0;
+          font-size: 1.2rem;
+          color: orange;
+        }
         p{
           line-height: 2.1rem;
           .label{
@@ -55,20 +60,19 @@ page-item-detail {
             color: map-get($colors, primary);
           }
         }
+        &.requesting{
+          border-color: #989898;
+          .button-inner{
+            font-size: 1.8rem;
+            font-weight: normal;
+            color: #989898;
+          }
+        }
       }
       h3{
         margin-bottom: 0.2rem;
         margin-top: 2.4rem;
         font-size: 1.6rem;
-      }
-      .lender-info{
-        h5{
-          margin-top: 1rem;
-          color: dodgerblue;
-          ion-icon{
-            vertical-align: top;
-          }
-        }
       }
     }
   }

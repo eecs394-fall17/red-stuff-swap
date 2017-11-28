@@ -1,7 +1,6 @@
 import {Component} from '@angular/core';
 import {
-  ActionSheetController, IonicPage, LoadingController, NavController, Platform,
-  ToastController
+  ActionSheetController, IonicPage, LoadingController, NavController, ToastController
 } from 'ionic-angular';
 import {AngularFireDatabase, AngularFireList} from "angularfire2/database";
 import {Camera} from "@ionic-native/camera";
@@ -27,27 +26,29 @@ export class NewItemPage {
   private _loader: any;
 
   developerMode = false;
+  currentUser: any;
 
   private authForm: FormGroup;
-  private itemName: string = "";
-  private itemDescription: string = "";
-  private lendTime: number = 7;
   private itemImgUrl: string = "";
-  private credit: number = 10;
 
   constructor(private db: AngularFireDatabase, private navCtrl: NavController, private camera: Camera,
               private actionSheetCtrl: ActionSheetController, private toastCtrl: ToastController,
               private loadingCtrl: LoadingController, private formBuilder: FormBuilder,
               private user: UserService) {
     this._itemRef = this.db.list('/item');
+  }
 
-    this.authForm = formBuilder.group({
-      itemName: ['', Validators.compose([Validators.required, Validators.maxLength(40)])],
-      itemDescription: ['', Validators.compose([Validators.required, Validators.maxLength(200)])],
-      lendTime: ['7', Validators.compose([Validators.required])],
-      personName: [user.getCurrentUser().user_name],
-      personEmail: [user.getCurrentUser().user_email]
-    });
+  ngOnInit(){
+    this.user.currentUser.subscribe(user => {
+      this.authForm = this.formBuilder.group({
+        itemName: ['', Validators.compose([Validators.required, Validators.maxLength(40)])],
+        itemLocation: ['', Validators.compose([Validators.required, Validators.maxLength(40)])],
+        itemDescription: ['', Validators.compose([Validators.required, Validators.maxLength(200)])],
+        lendTime: ['7', Validators.compose([Validators.required])],
+        personName: [user.user_name],
+        personEmail: [user.user_email]
+      });
+    })
   }
 
   addItem(value) {
@@ -56,6 +57,7 @@ export class NewItemPage {
       // todo wrong url
       image_url: this.itemImgUrl,
       name: value.itemName,
+      location: value.itemLocation,
       rating: 0,
       reviews_num: 0,
       status: "on_shell",
@@ -65,7 +67,7 @@ export class NewItemPage {
       // todo change these after user system is done
       email: value.personEmail,
       person_name: value.personName,
-      person_id: this.user.getCurrentUser().user_id,
+      person_id: this.currentUser.user_id,
       // todo this should not be here
       radius: 2
     });
@@ -112,7 +114,7 @@ export class NewItemPage {
   takePicture(sourceType) {
     // Create options for the Camera Dialog
     let options = {
-      quality: 100,
+      quality: 50,
       sourceType: sourceType,
       saveToPhotoAlbum: false,
       correctOrientation: true,

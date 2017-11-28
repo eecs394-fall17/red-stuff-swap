@@ -1,0 +1,17 @@
+<!-- Generated template for the AppBarComponent component -->
+<ion-header class="app-header">
+  <ion-toolbar>
+    <ion-buttons left>
+      <button ion-button icon-only (click)="showProfile()">
+        <ion-icon name="ios-person-outline"></ion-icon>
+        <ion-badge *ngIf="newMsg != 0">{{newMsg}}</ion-badge>
+      </button>
+    </ion-buttons>
+    <img src="assets/imgs/spare_logo.png">
+    <ion-buttons right>
+      <button ion-button icon-only (click)="addNewItem()">
+        <ion-icon name="ios-add-circle-outline"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>

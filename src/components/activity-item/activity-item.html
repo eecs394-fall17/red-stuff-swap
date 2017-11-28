@@ -1,0 +1,166 @@
+<!-- Generated template for the ActivityItemComponent component -->
+
+<button ion-item detail-none no-lines (click)="markAsRead()"
+        *ngIf="data.identity == 'borrower' && data.order.status == 'requested'">
+  <ion-thumbnail item-start>
+    <div class="image" [ngStyle]="{'background-image':'url(' + data.item.image_url +')'}"></div>
+  </ion-thumbnail>
+  <h2 [ngStyle]="{color: data.order.borrower_has_read? 'black': 'red'}">{{data.item.name}}</h2>
+  <h3>Request Sent</h3>
+  <p class="description">Date: {{startDate}} - {{endDate}}</p>
+  <p>{{data.borrower.user_email}}</p>
+</button>
+
+<button ion-item detail-none no-lines (click)="markAsRead()"
+        *ngIf="data.identity == 'lender' && data.order.status == 'requested'">
+  <ion-thumbnail item-start>
+    <div class="image" [ngStyle]="{'background-image':'url(' + data.item.image_url +')'}"></div>
+  </ion-thumbnail>
+  <h2 [ngStyle]="{color: data.order.lender_has_read? 'black': 'red'}">{{data.item.name}}</h2>
+  <h3>Borrow Request</h3>
+  <p class="description">Date: {{startDate}} - {{endDate}}</p>
+  <p>{{data.borrower.user_email}}</p>
+
+  <div item-end class="action-buttons">
+    <button ion-button small round (click)="reserve($event); performAction(data.order.key, 'request_confirmed');">
+      Accept
+    </button>
+    <button ion-button small round (click)="reserve($event); performAction(data.order.key, 'request_denied');">
+      Deny
+    </button>
+  </div>
+</button>
+
+<button ion-item detail-none no-lines (click)="markAsRead()"
+        *ngIf="data.order.status == 'request_denied'">
+  <ion-thumbnail item-start>
+    <div class="image" [ngStyle]="{'background-image':'url(' + data.item.image_url +')'}"></div>
+  </ion-thumbnail>
+  <h2 [ngStyle]="{color: ((data.order.borrower_has_read && data.identity == 'borrower') || (data.order.lender_has_read && data.identity == 'lender'))? 'black': 'red'}">{{data.item.name}}</h2>
+  <h3 class="denied">Request Denied</h3>
+  <p class="description">Date: {{startDate}} - {{endDate}}</p>
+  <p>{{data.borrower.user_email}}</p>
+</button>
+
+<button ion-item detail-none no-lines (click)="markAsRead()"
+        *ngIf="data.identity == 'borrower' && data.order.status == 'request_confirmed'">
+  <ion-thumbnail item-start>
+    <div class="image" [ngStyle]="{'background-image':'url(' + data.item.image_url +')'}"></div>
+  </ion-thumbnail>
+  <h2 [ngStyle]="{color: data.order.borrower_has_read? 'black': 'red'}">{{data.item.name}}</h2>
+  <h3 class="accepted">Request Accepted</h3>
+  <p class="description">Date: {{startDate}} - {{endDate}}</p>
+  <p>{{data.borrower.user_email}}</p>
+</button>
+
+<button ion-item detail-none no-lines (click)="markAsRead()"
+        *ngIf="data.identity == 'lender' && data.order.status == 'request_confirmed'">
+  <ion-thumbnail item-start>
+    <div class="image" [ngStyle]="{'background-image':'url(' + data.item.image_url +')'}"></div>
+  </ion-thumbnail>
+  <h2 [ngStyle]="{color: data.order.lender_has_read? 'black': 'red'}">{{data.item.name}}</h2>
+  <h3>Item to Lend Out</h3>
+  <p class="description">Date: {{startDate}} - {{endDate}}</p>
+  <p>{{data.borrower.user_email}}</p>
+
+  <div item-end class="action-buttons">
+    <button ion-button small round (click)="reserve($event); performAction(data.order.key, 'item_borrowed')">
+      Handed to<br />Borrower
+    </button>
+  </div>
+</button>
+
+<button ion-item detail-none no-lines (click)="markAsRead()"
+        *ngIf="data.identity == 'lender' && data.order.status == 'item_borrowed'">
+  <ion-thumbnail item-start>
+    <div class="image" [ngStyle]="{'background-image':'url(' + data.item.image_url +')'}"></div>
+  </ion-thumbnail>
+  <h2 [ngStyle]="{color: data.order.lender_has_read? 'black': 'red'}">{{data.item.name}}</h2>
+  <h3>Waiting for Borrower's Confirmation</h3>
+  <p class="description">Date: {{startDate}} - {{endDate}}</p>
+  <p>{{data.borrower.user_email}}</p>
+</button>
+
+<button ion-item detail-none no-lines (click)="markAsRead()"
+        *ngIf="data.identity == 'borrower' && data.order.status == 'item_borrowed'">
+  <ion-thumbnail item-start>
+    <div class="image" [ngStyle]="{'background-image':'url(' + data.item.image_url +')'}"></div>
+  </ion-thumbnail>
+  <h2 [ngStyle]="{color: data.order.borrower_has_read? 'black': 'red'}">{{data.item.name}}</h2>
+  <h3>Item Handed Out from Lender</h3>
+  <p class="description">Date: {{startDate}} - {{endDate}}</p>
+  <p>{{data.borrower.user_email}}</p>
+
+  <div item-end class="action-buttons">
+    <button ion-button small round (click)="reserve($event); performAction(data.order.key, 'item_received')">
+      Received<br />Item
+    </button>
+  </div>
+</button>
+
+<button ion-item detail-none no-lines (click)="markAsRead()"
+        *ngIf="data.identity == 'lender' && data.order.status == 'item_received'">
+  <ion-thumbnail item-start>
+    <div class="image" [ngStyle]="{'background-image':'url(' + data.item.image_url +')'}"></div>
+  </ion-thumbnail>
+  <h2 [ngStyle]="{color: data.order.lender_has_read? 'black': 'red'}">{{data.item.name}}</h2>
+  <h3>Lending</h3>
+  <p class="description">Date: {{startDate}} - {{endDate}}</p>
+  <p>{{data.borrower.user_email}}</p>
+</button>
+
+<button ion-item detail-none no-lines (click)="markAsRead()"
+        *ngIf="data.identity == 'borrower' && data.order.status == 'item_received'">
+  <ion-thumbnail item-start>
+    <div class="image" [ngStyle]="{'background-image':'url(' + data.item.image_url +')'}"></div>
+  </ion-thumbnail>
+  <h2 [ngStyle]="{color: data.order.borrower_has_read? 'black': 'red'}">{{data.item.name}}</h2>
+  <h3>Borrowing</h3>
+  <p class="description">Date: {{startDate}} - {{endDate}}</p>
+  <p>{{data.borrower.user_email}}</p>
+
+  <div item-end class="action-buttons">
+    <button ion-button small round (click)="reserve($event); performAction(data.order.key, 'item_returned')">
+      Returned to<br />Lender
+    </button>
+  </div>
+</button>
+
+<button ion-item detail-none no-lines (click)="markAsRead()"
+        *ngIf="data.identity == 'borrower' && data.order.status == 'item_returned'">
+  <ion-thumbnail item-start>
+    <div class="image" [ngStyle]="{'background-image':'url(' + data.item.image_url +')'}"></div>
+  </ion-thumbnail>
+  <h2 [ngStyle]="{color: data.order.borrower_has_read? 'black': 'red'}">{{data.item.name}}</h2>
+  <h3>Waiting for Lender's Confirmation</h3>
+  <p class="description">Date: {{startDate}} - {{endDate}}</p>
+  <p>{{data.borrower.user_email}}</p>
+</button>
+
+<button ion-item detail-none no-lines (click)="markAsRead()"
+        *ngIf="data.identity == 'lender' && data.order.status == 'item_returned'">
+  <ion-thumbnail item-start>
+    <div class="image" [ngStyle]="{'background-image':'url(' + data.item.image_url +')'}"></div>
+  </ion-thumbnail>
+  <h2 [ngStyle]="{color: data.order.lender_has_read? 'black': 'red'}">{{data.item.name}}</h2>
+  <h3>Item Returned from Borrower</h3>
+  <p class="description">Date: {{startDate}} - {{endDate}}</p>
+  <p>{{data.borrower.user_email}}</p>
+
+  <div item-end class="action-buttons">
+    <button ion-button small round (click)="reserve($event); performAction(data.order.key, 'return_confirmed')">
+      Received<br />Item
+    </button>
+  </div>
+</button>
+
+<button ion-item detail-none no-lines (click)="markAsRead()"
+        *ngIf="data.order.status == 'return_confirmed'">
+  <ion-thumbnail item-start>
+    <div class="image" [ngStyle]="{'background-image':'url(' + data.item.image_url +')'}"></div>
+  </ion-thumbnail>
+  <h2 [ngStyle]="{color: ((data.order.borrower_has_read && data.identity == 'borrower') || (data.order.lender_has_read && data.identity == 'lender'))? 'black': 'red'}">{{data.item.name}}</h2>
+  <h3 class="denied">Item Returned</h3>
+  <p class="description">Date: {{startDate}} - {{endDate}}</p>
+  <p>{{data.borrower.user_email}}</p>
+</button>

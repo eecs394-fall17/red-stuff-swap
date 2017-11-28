@@ -11,12 +11,12 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import {EmailComposer} from "@ionic-native/email-composer";
 import {File} from "@ionic-native/file";
-import {Transfer} from "@ionic-native/transfer";
-import {FilePath} from "@ionic-native/file-path";
 import {Camera} from "@ionic-native/camera";
 import { CalendarModule } from "ion2-calendar";
 import { UserService } from '../providers/user-service/user-service';
 import {LongPressModule} from "ionic-long-press";
+import {MomentModule} from "angular2-moment";
+import { OrderService } from '../providers/order-service/order-service';
 
 @NgModule({
   declarations: [
@@ -29,7 +29,8 @@ import {LongPressModule} from "ionic-long-press";
     AngularFireDatabaseModule,
     AngularFireAuthModule,
     CalendarModule,
-    LongPressModule
+    LongPressModule,
+    MomentModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -41,11 +42,10 @@ import {LongPressModule} from "ionic-long-press";
     AngularFireDatabase,
     EmailComposer,
     File,
-    Transfer,
-    FilePath,
     Camera,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    UserService
+    UserService,
+    OrderService
   ]
 })
 export class AppModule {}

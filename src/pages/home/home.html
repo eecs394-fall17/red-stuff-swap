@@ -1,4 +1,6 @@
-<ion-header>
+<app-bar></app-bar>
+
+<ion-header class="with-app-bar">
   <ion-navbar>
     <ion-title class="centered-title">
       Items Available for Borrow
@@ -6,8 +8,9 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content>
+<ion-content class="with-app-bar">
+	<ion-searchbar (ionInput)="getItems($event)"></ion-searchbar>
   <ion-list>
-    <item-listing *ngFor="let item of _items | async" [data]=item></item-listing>
+    <item-listing *ngFor="let item of filteredItems" [data]=item></item-listing>
   </ion-list>
 </ion-content>

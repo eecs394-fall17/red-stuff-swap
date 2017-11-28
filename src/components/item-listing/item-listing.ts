@@ -1,7 +1,6 @@
 import { Component, Input } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
-
-import {EmailComposer} from "@ionic-native/email-composer";
+import { NavController, NavParams, App } from 'ionic-angular';
+import { AngularFireList, AngularFireDatabase } from "angularfire2/database";
 
 /**
  * Generated class for the ItemListingComponent component.
@@ -17,27 +16,44 @@ export class ItemListingComponent {
 
   @Input('data') data: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private emailComposer: EmailComposer) {}
+  private _itemsRef: AngularFireList<any>;
+  private _ordersRef: AngularFireList<any>;
+  private _relatedOrders: any;
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, private db:AngularFireDatabase,
+              private app: App) {
+  }
+
+  ngOnInit(){
+    this._itemsRef = this.db.list('/item');
+    this._ordersRef = this.db.list('/order', ref => ref.orderByChild(`item_id`).equalTo(this.data.key));
+  }
 
   showItemDetails() {
-    this.navCtrl.push("ItemDetailPage", {
+    this.app.getRootNav().push("ItemDetailPage", {
       item: this.data,
     });
   }
 
-  openEmailDialog() {
-    // const newEmailModal:Modal = this.modalCtrl.create('EmailPage', {email: this.data.email, name: this.data.person_name});
-    // newEmailModal.present();
-    this.emailComposer.open({to: this.data.email, isHtml: true});
-  }
-
   openEditDialog(){
-    this.navCtrl.push("EditItemPage", {
+    this.app.getRootNav().push("EditItemPage", {
       data: this.data,
     });
   }
 
-  reserve(event){
-    event.stopPropagation();
+  deleteItem(){
+    this._itemsRef.remove(this.data.key);
+    this._ordersRef.snapshotChanges().map(changes => {
+      return changes.map(c => ({ key: c.payload.key, ...c.payload.val() }));
+    }).subscribe(orders=>{
+      this._relatedOrders = orders;
+      this.deleteRelatedOrders();
+    });
+  }
+
+  private deleteRelatedOrders(){
+    this._relatedOrders.forEach(order => {
+      this._ordersRef.remove(order.key);
+    });
   }
 }

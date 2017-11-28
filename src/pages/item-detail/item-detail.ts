@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import {IonicPage, ModalController, NavController, NavParams, ToastController} from 'ionic-angular';
-import {CalendarModal, CalendarModalOptions} from "ion2-calendar";
+import {IonicPage, ModalController, NavController, NavParams} from 'ionic-angular';
+import {CalendarModal, CalendarModalOptions, DayConfig} from "ion2-calendar";
 import {AngularFireDatabase, AngularFireList} from "angularfire2/database";
-import * as firebase from "firebase";
 import {UserService} from "../../providers/user-service/user-service";
+import * as moment from 'moment';
 /**
  * Generated class for the ItemDetailPage page.
  *
@@ -22,24 +22,55 @@ export class ItemDetailPage {
   stars = ["star", "star", "star", "star", "star"];
 
   requested = false;
+  requesting = false;
+  buttonDisabled = false;
+  datePickerHint = `Pick up dates of borrow and return first`;
+  isOwner = false;
+  currentUser:any;
+
+  private _orderRef: AngularFireList<any>;
+  private _disabledDates: DayConfig[] = [];
+  private _canSelectDate = true;
+
   private fromDate: string;
+  private fromDateRaw: Date;
   private fromTime: string;
   private toDate: string;
+  private toDateRaw: Date;
   private toTime: string;
-  private createTime: number;
-  private item_id: string;
-  private _itemRef: AngularFireList<any>;
-  private fromDate_1: number;
-  private toDate_1: number;
-  private borrower_id: number;
-  private owner_id: string;
-  private number: number;
-  private item_id_1: string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private modalCtrl: ModalController,
-              private toastCtrl: ToastController, private db: AngularFireDatabase) {
+              private db: AngularFireDatabase, private user: UserService) {
   	this.item= this.navParams.get('item');
-    this._itemRef = this.db.list('/order');
+    this._orderRef = this.db.list('/order');
+
+    this.db.list( `/order`,
+      ref => ref.orderByChild(`item_id`).equalTo(this.item.key))
+      .snapshotChanges().map(changes => {
+      return changes.map(c => ({ key: c.payload.key, ...c.payload.val()}));
+    }).subscribe( orders => {
+      // console.log(orders);
+      this._disabledDates = [];
+      const dayLength = 1000 * 60 * 60 * 24;
+      orders.forEach(order => {
+        if(order.status != `requested` && order.status != `request_denied` && order.end_time > Date.now()){
+          const from = new Date(order.start_time);
+          const to = new Date(order.end_time);
+
+          const range = to.valueOf() - from.valueOf();
+          let days = (range - range % dayLength) / dayLength;
+          if(range % dayLength != 0) days += 1;
+
+          for(let i = 0; i< days; i++){
+            this._disabledDates.push({
+              date: new Date(from.valueOf() + i * dayLength),
+              disable: true
+            })
+          }
+        }
+      });
+      this.checkDateRange();
+    });
   }
 
   ngOnInit(){
@@ -62,40 +93,79 @@ export class ItemDetailPage {
     this.fromTime = new Date(Date.now() - timer.getTimezoneOffset() * 60000).toISOString();
     this.toTime = new Date(Date.now() - timer.getTimezoneOffset() * 60000).toISOString();
     this.fromDate = `${timer.getMonth() + 1}/${timer.getDate()}/${timer.getFullYear()}`;
+    this.fromDateRaw = new Date(this.fromDate);
     this.toDate = `${timer.getMonth() + 1}/${timer.getDate()}/${timer.getFullYear()}`;
-    this.createTime = timer.getTime();
-    this.fromDate_1 = timer.getTime();
-    this.toDate_1 = timer.getTime();
-    this.owner_id = this.item.person_id;
-    let us = new UserService();
-    this.borrower_id = us.getCurrentUser().user_id;
-    this.number = 0;
-    this.item_id_1 = this.item.key;
+    this.toDateRaw = new Date(this.toDate);
+
+    this.user.currentUser.subscribe(user => {
+      this.isOwner = user.user_id == this.item.person_id;
+      this.currentUser = user;
+
+      this.db.list('/order',
+        ref => ref.orderByChild(`borrower_id`).equalTo(user.user_id))
+        .snapshotChanges().map(changes => {
+        return changes.map(c => ({ key: c.payload.key, ...c.payload.val()}));
+      }).subscribe(orders => {
+        const now = Date.now();
+        for (let i = 0; i < orders.length; i++){
+          let order = orders[i];
+          if (order.start_time > now && order.status == `requested`){
+            this.requested = true;
+            const from = new Date(order.start_time);
+            const to = new Date(order.end_time);
+
+            this.fromTime = new Date(from.valueOf() - from.getTimezoneOffset() * 60000).toISOString();
+            this.toTime = new Date(to.valueOf() - from.getTimezoneOffset() * 60000).toISOString();
+            this.fromDate = `${from.getMonth() + 1}/${from.getDate()}/${from.getFullYear()}`;
+            this.fromDateRaw = new Date(this.fromDate);
+            this.toDate = `${to.getMonth() + 1}/${to.getDate()}/${to.getFullYear()}`;
+            this.toDateRaw = new Date(this.toDate);
+            this.buttonDisabled = true;
+            this._canSelectDate = false;
+            break;
+          }
+        }
+      });
+    });
   }
 
   requestItem(){
-    if(this.number == 0) {
-      this.number = 1;
-      this.requested = !this.requested;
-      this._itemRef.push({
-        end_date: this.toDate_1,
-        time_created: this.createTime,
-        owner_id: this.owner_id,
-        start_date: this.fromDate_1,
-        status: 'request_sent',
-        borrower_id: this.borrower_id,
-      });
-    }
-    else if(this.number == 1) {
-      this.presentToast(`You have sent a request.`);
-    }
-    // todo use Date.parse('Thu, 01 Jan 1970 00:00:00 GMT-0400') to parse time data
-    // source: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse
+    if(this.buttonDisabled || this.isOwner) return;
+
+    let fTime = new Date(this.fromTime);
+    let tTime = new Date(this.toTime);
+    let from = moment(`${this.fromDateRaw.toLocaleDateString()} ${fTime.getUTCHours()}:${fTime.getUTCMinutes()}`,
+      `MM/DD/YYYY HH:mm`);
+    let to = moment(`${this.toDateRaw.toLocaleDateString()} ${tTime.getUTCHours()}:${tTime.getUTCMinutes()}`,
+      `MM/DD/YYYY HH:mm`);
+    this.requesting = true;
+    this._orderRef.push({
+      borrower_id: this.currentUser.user_id,
+      lender_id: this.item.person_id,
+      item_id: this.item.key,
+      status: `requested`,
+      start_time: from.valueOf(),
+      end_time: to.valueOf(),
+      time_created: Date.now(),
+      borrower_has_read: false,
+      lender_has_read: false,
+    }).then(()=>{
+      this.requesting = false;
+      this.requested = true;
+    });
   }
 
-  openCalendar(label) {
+  openCalendar() {
+    if (!this._canSelectDate) return;
+
     const options: CalendarModalOptions = {
-      title: 'PICK DATE',
+      title: 'PICK BORROW DATE',
+      pickMode: 'range',
+      daysConfig: this._disabledDates,
+      defaultDateRange: {
+        from: this.fromDateRaw,
+        to: this.toDateRaw
+      }
     };
     let myCalendar =  this.modalCtrl.create(CalendarModal, {
       options: options
@@ -103,34 +173,44 @@ export class ItemDetailPage {
 
     myCalendar.present();
 
-    myCalendar.onDidDismiss((date, role) => {
-      if(date != null){
-        if(label == 'from'){
-          this.fromDate = `${date.months}/${date.date}/${date.years}`;
-          var date1 = `${date.years}-${date.months}-${date.date} 00:00`;
-          var date2 = new Date(Date.parse(date1.replace(/-/g, "/")));
-          this.fromDate_1 = date2.getTime();
-        }else{
-          this.toDate = `${date.months}/${date.date}/${date.years}`;
-          var date3 = `${date.years}-${date.months}-${date.date} 00:00`;
-          var date4 = new Date(Date.parse(date3.replace(/-/g, "/")));
-          this.fromDate_1 = date4.getTime();
-        }
+    myCalendar.onDidDismiss((dates, role) => {
+      if(dates != null){
+        let from = dates.from;
+        let to = dates.to;
+        this.fromDate = `${from.months}/${from.date}/${from.years}`;
+        this.fromDateRaw = from.dateObj;
+        this.toDate = `${to.months}/${to.date}/${to.years}`;
+        this.toDateRaw = to.dateObj;
+        this.checkDateRange();
       }
     })
   }
 
-  contactLender(){
-    this.presentToast(`This function is still under development.`);
+  checkDateRange(){
+    const from = this.fromDateRaw.valueOf();
+    const to = this.toDateRaw.valueOf();
+    for(let i = 0; i<this._disabledDates.length;i++){
+      const date = this._disabledDates[i].date.valueOf();
+      if(date > from && date < to){
+        this.buttonDisabled = true;
+        this.datePickerHint = `Cannot select dates including item unavailable`;
+        return;
+      }
+    }
+    this.datePickerHint = ``;
+    this.checkTime(from, to);
+    this.buttonDisabled = false;
+    if(this.requested){
+      this.buttonDisabled = true;
+    }
   }
 
-  private presentToast(text) {
-    let toast = this.toastCtrl.create({
-      message: text,
-      duration: 3000,
-      position: 'top'
-    });
-    toast.present();
+  checkTime(from, to){
+    if(from == to){
+      if(new Date(this.fromTime).valueOf() >= new Date(this.toTime).valueOf()){
+        this.buttonDisabled = true;
+        this.datePickerHint = `Borrow time is ahead of return time`;
+      }
+    }
   }
-
 }
