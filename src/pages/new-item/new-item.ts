@@ -67,7 +67,7 @@ export class NewItemPage {
       // todo change these after user system is done
       email: value.personEmail,
       person_name: value.personName,
-      person_id: this.currentUser.user_id,
+      person_id: this.user.getCurrentUser().user_id,
       // todo this should not be here
       radius: 2
     });
