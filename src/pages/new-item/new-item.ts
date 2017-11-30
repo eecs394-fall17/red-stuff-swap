@@ -48,6 +48,7 @@ export class NewItemPage {
         personName: [user.user_name],
         personEmail: [user.user_email]
       });
+      this.currentUser = user;
     })
   }
 
