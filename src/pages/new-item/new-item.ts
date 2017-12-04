@@ -55,7 +55,6 @@ export class NewItemPage {
   addItem(value) {
     this._itemRef.push({
       credit: 0,
-      // todo wrong url
       image_url: this.itemImgUrl,
       name: value.itemName,
       location: value.itemLocation,
@@ -65,7 +64,6 @@ export class NewItemPage {
       time_created: Date.now(),
       time_range: value.lendTime,
       description: value.itemDescription,
-      // todo change these after user system is done
       email: value.personEmail,
       person_name: value.personName,
       person_id: this.currentUser.user_id,

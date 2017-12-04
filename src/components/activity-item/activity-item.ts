@@ -18,11 +18,9 @@ export class ActivityItemComponent {
   startDate : String;
   endDate: String;
   _ordersRef: AngularFireList<any>;
-  //currentUserID: string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private db:AngularFireDatabase) {
     this._ordersRef = this.db.list('/order');
-    //this.currentUserID = user.getCurrentUser().user_id;
   }
 
   ngOnInit(){
@@ -50,7 +48,6 @@ export class ActivityItemComponent {
       })
     }
     console.log(this.data.order.key);
-    //console.log("Mark as read!");
   }
 
 
