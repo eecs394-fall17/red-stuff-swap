@@ -27,13 +27,41 @@ $ npm install -g ionic cordova
 
 > Maybe you need to add `sudo` in front of the command to install it globally
 
-#### Set up project
+#### Set up Project
+
+##### Download
 
 Clone this repo to your local drive.
 
 ``` bash
 $ git clone https://github.com/eecs394-fall17/red-stuff-swap.git
 ```
+
+##### Set up Firebase
+
+Go to [Firebase](https://firebase.google.com). Login your Google Account and create a Firebase Application.
+
+On dashboard page of application, click wheel gear icon to open setting page.
+
+In `GENERAL` tab, you can get Project ID, Web Api Key, etc.
+
+Open file `src/environments/environments.ts` and replace settings like this:
+
+``` javascript
+export const environment = {
+  production: false,
+  firebase: {
+    apiKey: '<Your Web Api Key>',
+    authDomain: '<Your Project ID>.firebaseapp.com',
+    databaseURL: 'https://<Your Project ID>.firebaseio.com',
+    projectId: '<Your Project ID>',
+    storageBucket: 'gs://<Your Project ID>.appspot.com',
+    messagingSenderId: '<Number in "Public Facing Name">'
+  }
+};
+```
+
+##### Run and Test Application
 
 Run and preview the app for the first time.
 
@@ -87,6 +115,10 @@ $ ionic cordova platform build ios
 ```
 
 Open file `Spare.xcworkspace` in `platforms/ios/`, run the app on your iOS device through XCode.
+
+## Known Bug
+
+* When Running app on iOS Ionic View, sometimes tap on add item icon in top bar will not call out add new item page.
 
 ## License
 

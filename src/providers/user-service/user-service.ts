@@ -11,7 +11,7 @@ import { BehaviorSubject } from "rxjs/BehaviorSubject";
 @Injectable()
 export class UserService {
 
-  private _userA = {user_id: 0, user_name: 'Donnie River', user_email: 'driver@user.mail.com'};
+  private _userA = {user_id: 0, user_name: 'Donnie River', user_email: 'donnieriver@gmail.com'};
   private _userB = {user_id: 1, user_name: 'Annie Curtis', user_email: 'acurtis@user.mail.com'};
   private _currentUser: any;
 
